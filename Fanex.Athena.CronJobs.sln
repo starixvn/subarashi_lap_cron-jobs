@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32413.511
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{0A7261BD-2EA8-46EA-A25C-A592208F0B58}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanex.Athena.CronJobs.Core", "src\Fanex.Athena.CronJobs.Core\Fanex.Athena.CronJobs.Core.csproj", "{6CD6F7F2-4679-4CF0-BB8F-CD64BBC22DE6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanex.Athena.CronJobs.Site", "src\Fanex.Athena.CronJobs.Site\Fanex.Athena.CronJobs.Site.csproj", "{F960ADFC-E78F-4577-A926-DF54F0897884}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Appliction", "Appliction", "{31C6DC71-1233-44BB-B946-EC92D333E66D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanex.Athena.CronJobs.App", "src\Fanex.Athena.CronJobs.App\Fanex.Athena.CronJobs.App.csproj", "{CDA82B32-15E4-4315-B948-B9E612FCAD2F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{C20B07E4-9086-4EB8-B0E4-778B829CC741}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanex.Athena.CronJobs.Infrastructure", "src\Fanex.Athena.CronJobs.Infrastructure\Fanex.Athena.CronJobs.Infrastructure.csproj", "{EDC9285E-34CC-4AFF-AABF-9D9B891DED96}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6CD6F7F2-4679-4CF0-BB8F-CD64BBC22DE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CD6F7F2-4679-4CF0-BB8F-CD64BBC22DE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CD6F7F2-4679-4CF0-BB8F-CD64BBC22DE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CD6F7F2-4679-4CF0-BB8F-CD64BBC22DE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F960ADFC-E78F-4577-A926-DF54F0897884}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F960ADFC-E78F-4577-A926-DF54F0897884}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F960ADFC-E78F-4577-A926-DF54F0897884}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F960ADFC-E78F-4577-A926-DF54F0897884}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDA82B32-15E4-4315-B948-B9E612FCAD2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDA82B32-15E4-4315-B948-B9E612FCAD2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDA82B32-15E4-4315-B948-B9E612FCAD2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDA82B32-15E4-4315-B948-B9E612FCAD2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDC9285E-34CC-4AFF-AABF-9D9B891DED96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDC9285E-34CC-4AFF-AABF-9D9B891DED96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDC9285E-34CC-4AFF-AABF-9D9B891DED96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDC9285E-34CC-4AFF-AABF-9D9B891DED96}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6CD6F7F2-4679-4CF0-BB8F-CD64BBC22DE6} = {0A7261BD-2EA8-46EA-A25C-A592208F0B58}
+		{CDA82B32-15E4-4315-B948-B9E612FCAD2F} = {31C6DC71-1233-44BB-B946-EC92D333E66D}
+		{EDC9285E-34CC-4AFF-AABF-9D9B891DED96} = {C20B07E4-9086-4EB8-B0E4-778B829CC741}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9A7ED7FE-9ED2-4BE2-8D38-1FDB1CBC026C}
+	EndGlobalSection
+EndGlobal
