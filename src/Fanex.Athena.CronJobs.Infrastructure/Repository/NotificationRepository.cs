@@ -26,7 +26,8 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Repository
                 CustReached = xmlReachCust,
                 LastCheckTime = param.LastCheckTime,
                 LastScanSettingDate = param.LastScanSettingDate,
-                NotificationType = param.NotificationType
+                NotificationType = param.NotificationType,
+                ServiceName = param.ServiceName
             });
         }
 

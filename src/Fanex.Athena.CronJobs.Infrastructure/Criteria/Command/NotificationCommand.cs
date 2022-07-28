@@ -5,13 +5,15 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Criteria.Command
 {
     internal class NotificationCommand : NonQueryCommand
     {
-        public string CustReached { get; set; }
+        public string CustReached { get; init; }
 
-        public int NotificationType { get; set; }
+        public string ServiceName { get; init; }
 
-        public DateTime? LastCheckTime { get; set; }
+        public int NotificationType { get; init; }
 
-        public DateTime? LastScanSettingDate { get; set; }
+        public DateTime? LastCheckTime { get; init; }
+
+        public DateTime? LastScanSettingDate { get; init; }
 
         public override string GetSettingKey() => "Acc_Dep_WLMonitored_Service_ReachHistoryIns";
 

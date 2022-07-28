@@ -1,5 +1,5 @@
-﻿using Fanex.Athena.CronJobs.App.Jobs;
-using Fanex.Athena.CronJobs.Core.ExecuteTasks;
+﻿using Fanex.Athena.CronJobs.App.Filters;
+using Fanex.Athena.CronJobs.App.Jobs;
 using Fanex.Athena.CronJobs.Core.Repository;
 using Fanex.Athena.CronJobs.Core.Services;
 using Fanex.Athena.CronJobs.Infrastructure.Repository;
@@ -15,6 +15,7 @@ namespace Fanex.Athena.CronJobs.App.Extensions
     {
         public static IServiceCollection AddHangFireJobs(this IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
             services.AddRepository()
                 .AddService();
             return services;
@@ -24,11 +25,12 @@ namespace Fanex.Athena.CronJobs.App.Extensions
         {
             app.UseHangfireDashboard(path, new DashboardOptions
             {
-                DisplayStorageConnectionString = true            
+                DisplayStorageConnectionString = true,
+                Authorization = new[] { new AllowedAnonymouseAuthorizationFilter() }
             });
 
-            RegisterRecuringTask<NotificateChangeSettingJob>(nameof(NotificateChangeSettingJob), "2/5 * * * *");
-            RegisterRecuringTask<NotificateReachThresholdJob>(nameof(NotificateReachThresholdJob), "5/5 * * * *");
+            RegisterRecuringTask<NotificateChangeSettingJob>(nameof(NotificateChangeSettingJob), "1/5 * * * *");
+            RegisterRecuringTask<NotificateReachThresholdJob>(nameof(NotificateReachThresholdJob), "3/5 * * * *");
         }
 
         private static IServiceCollection AddRepository(this IServiceCollection services)

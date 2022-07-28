@@ -15,8 +15,8 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Repository
         public AccumulateRepository(IDynamicRepository dynamicRepository)
             => DynamicRepository = dynamicRepository;
 
-        public Task<IEnumerable<AccumulateWinloss>> GetUserAccumulateWinlossAsync(string custId, DateTime lastScanDate)
-            => DynamicRepository.FetchAsync<AccumulateWinloss>(new GetUserAccumulateWinlossCriteria { CurentDate = lastScanDate, CustId = custId });
+        public Task<IEnumerable<AccumulateWinloss>> GetUserAccumulateWinlossAsync(string custId, DateTime date)
+            => DynamicRepository.FetchAsync<AccumulateWinloss>(new GetUserAccumulateWinlossCriteria { CurrentDate = date, CustIds = custId });
 
 
         public Task<IEnumerable<AccumulateWinloss>> GetLastestAccumulateWinlossAsync(DateTime lastCheckTime, int batchCount)

@@ -1,5 +1,6 @@
 ﻿using Fanex.Athena.CronJobs.App.Settings;
 using Fanex.Athena.CronJobs.Core.Services;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
@@ -11,11 +12,15 @@ namespace Fanex.Athena.CronJobs.App.Jobs
         private IGlobalSettingService GlobalSettingService { get; }
         private NotificationSetting Setting { get; }
 
-        public NotificateChangeSettingJob(INotificationService notificationService, IGlobalSettingService globalSettingService, IOptions<NotificationSetting> options)
+        public NotificateChangeSettingJob(INotificationService notificationService
+            , IGlobalSettingService globalSettingService
+            , IOptions<NotificationSetting> options
+            , ILogger<NotificateChangeSettingJob> logger)
         {
             NotificationService = notificationService;
             GlobalSettingService = globalSettingService;
             Setting = options?.Value;
+            logger.LogError("Test Sentry");
         }
 
         public override async Task ExecuteAsync()
@@ -27,6 +32,7 @@ namespace Fanex.Athena.CronJobs.App.Jobs
             await NotificationService.NotificateChangeSettingAsync(new Core.Params.NotificationServiceParam
             {
                 ListTestUserIds = testUserIds,
+                ServiceName = Setting.MonitorServiceName,
                 IsTest = Setting.IsTest,
                 LastDate = lastScanTime
             });

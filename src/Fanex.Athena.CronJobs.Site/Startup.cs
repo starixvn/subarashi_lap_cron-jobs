@@ -1,17 +1,16 @@
+using Fanex.Athena.CronJobs.App.Extensions;
+using Fanex.Athena.CronJobs.App.Settings;
+using Fanex.Data;
+using Fanex.Data.SqlServer;
+using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using StackExchange.Redis;
-using Hangfire;
-using Fanex.Athena.CronJobs.App.Settings;
-using Fanex.Data;
-using System.Linq;
-using Fanex.Data.SqlServer;
 using System.Collections.Generic;
-using Fanex.Athena.CronJobs.App.Extensions;
+using System.Linq;
 
 namespace Fanex.Athena.CronJobs
 {
@@ -30,7 +29,7 @@ namespace Fanex.Athena.CronJobs
             ConfigFanexData();
             services.AddControllersWithViews();
 
-            services.AddHealthChecks();
+            services.AddSiteHealthChecks(Configuration);
 
             AddHangFireService(services);
 
@@ -39,6 +38,8 @@ namespace Fanex.Athena.CronJobs
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UsePing();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -49,10 +50,12 @@ namespace Fanex.Athena.CronJobs
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseForwardedHeaders();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UserHangFire("/jobs");
+            app.UseSiteHealthChecks(Configuration);
 
             app.UseRouting();
 
@@ -66,6 +69,7 @@ namespace Fanex.Athena.CronJobs
 
         private void AddHangFireService(IServiceCollection services)
         {
+            services.Configure<NotificationSetting>(Configuration.GetSection("NotificationSetting"));
             services.AddHangfireServer( );
             services.AddHangFireJobs();
             var redisConfig = Configuration.GetSection("Redis").Get<RedisSetting>();
@@ -84,6 +88,7 @@ namespace Fanex.Athena.CronJobs
                     Prefix = redisConfig.AppName
                 });
             });
+            
         }
 
         private void ConfigFanexData()

@@ -16,7 +16,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
         private IAccumulateRepository AccumulateRepository { get; }
 
 
-        public NotificationService(INotificationRepository notificationRepository, 
+        public NotificationService(INotificationRepository notificationRepository,
             IAccumulateRepository accumulateRepository)
         {
             NotificationRepository = notificationRepository;
@@ -34,18 +34,26 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
                 IsTest = param.IsTest
             });
 
-            var custIds = string.Join(",", changeSettingCusts.Select(_ => _.CustId));
-
-            var listReachNotifactionChangeSetting = new List<(AccumulateWinloss AccumWL, CustThresholdSetting CustThreshold)>();
-
-            var accumWls = await AccumulateRepository.GetUserAccumulateWinlossAsync(custIds, DateTime.Now);
-            foreach (var cust in changeSettingCusts)
+            if (!changeSettingCusts.Any())
             {
-                var accumWl = accumWls.FirstOrDefault(_ => _.CustId == cust.CustId);
-                if(accumWl?.AccumWL > cust.WinningThreshold)
+                return;
+            }
+
+            var custIds = string.Join(",", changeSettingCusts.Select(_ => _.CustId));
+            var listReachNotifactionChangeSetting = new List<(AccumulateWinloss AccumWL, CustThresholdSetting CustThreshold)>();
+            var accumWls = await AccumulateRepository.GetUserAccumulateWinlossAsync(custIds, DateTime.Now);
+            foreach (var accumWl in accumWls)
+            {
+                var cust = changeSettingCusts.FirstOrDefault(_ => _.CustId == accumWl.CustId);
+                if (accumWl.AccumWL >= cust?.WinningThreshold)
                 {
                     listReachNotifactionChangeSetting.Add((accumWl, cust));
                 }
+            }
+
+            if (!listReachNotifactionChangeSetting.Any())
+            {
+                return;
             }
 
             var custAccumulateParam = BuildCustAccumulateParam(listReachNotifactionChangeSetting);
@@ -55,17 +63,23 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
             {
                 Customers = custAccumulateParam,
                 LastScanSettingDate = maxDateTime,
+                ServiceName = param.ServiceName,
                 NotificationType = (int)NotificationType.ChangeThresholdSetting
             });
+
         }
 
         public async Task NotificateReachThresholdAsync(NotificationServiceParam param)
         {
             var isLastBatch = false;
             var lastDate = param.LastDate;
-            while(!isLastBatch)
+            while (!isLastBatch)
             {
                 var accumulateWL = await AccumulateRepository.GetLastestAccumulateWinlossAsync(lastDate, param.BatchNo);
+                if (!accumulateWL.Any())
+                {
+                    return;
+                }
                 await NotificateReachThresholdCustAsync(accumulateWL, param);
                 isLastBatch = param.IsRunOnlyFirstBatch || accumulateWL.Count() < param.BatchNo;
                 lastDate = accumulateWL.Max(_ => _.UpdatedTime);
@@ -75,6 +89,11 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
 
         private async Task NotificateReachThresholdCustAsync(IEnumerable<AccumulateWinloss> accumulateWLs, NotificationServiceParam param)
         {
+            if (!accumulateWLs.Any())
+            {
+                return;
+            }
+
             var listReachThresholdCust = new List<(AccumulateWinloss AccumWL, CustThresholdSetting CustThreshold)>();
 
             var custIds = string.Join(",", accumulateWLs.Select(_ => _.CustId));
@@ -90,25 +109,31 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
             foreach (var info in thresholdInfos)
             {
                 var accumWL = accumulateWLs.FirstOrDefault(_ => _.CustId == info.CustId);
-                if ( accumWL?.AccumWL > info.WinningThreshold)
+                if (accumWL?.AccumWL >= info.WinningThreshold)
                 {
                     listReachThresholdCust.Add((accumWL, info));
                 }
             }
 
+            if (!listReachThresholdCust.Any())
+            {
+                return;
+            }
+
             var custAccumulateParams = BuildCustAccumulateParam(listReachThresholdCust);
             var lastCheckTime = accumulateWLs.Max(_ => _.UpdatedTime);
-            await NotificationRepository.InsertNotificationAsync(new InsertNotificationParam 
+            await NotificationRepository.InsertNotificationAsync(new InsertNotificationParam
             {
                 Customers = custAccumulateParams,
                 LastCheckTime = lastCheckTime,
+                ServiceName = param.ServiceName,
                 NotificationType = (int)NotificationType.ReachThreshold
             });
 
         }
 
         private IEnumerable<CustAccumulateParam> BuildCustAccumulateParam(List<(AccumulateWinloss AccumWL, CustThresholdSetting CustThreshold)> listReachThresholdCust)
-        
+
             => listReachThresholdCust.Select(_ => new CustAccumulateParam
             {
                 AccumWL = _.AccumWL.AccumWL,
@@ -116,6 +141,6 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
                 SportType = (int)SportType.SportBook,
                 WinningThreshold = _.CustThreshold.WinningThreshold
             });
-        
+
     }
 }

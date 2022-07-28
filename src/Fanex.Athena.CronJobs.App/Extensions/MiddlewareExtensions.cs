@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,18 @@ namespace Fanex.Athena.CronJobs.App.Extensions
             services.AddSingleton<IUMRestClient, UMRestClient>();
             services.AddSingleton<IHttpContextHelper, ContextInMemoryHelper>();
             services.AddSingleton<IMaintenanceService, MaintenanceService>();
+        }
+
+        public static void UsePing(this IApplicationBuilder app)
+        {
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Path.StartsWithSegments("/ping"))
+                {
+                    return;
+                }
+                await next();
+            });
         }
     }
 

@@ -1,4 +1,5 @@
 ﻿using Fanex.Athena.CronJobs.App.Settings;
+using Fanex.Athena.CronJobs.Core.Params;
 using Fanex.Athena.CronJobs.Core.Services;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
@@ -25,11 +26,12 @@ namespace Fanex.Athena.CronJobs.App.Jobs
             var globalSetting = await GlobalSettingService.GetAllSettingAsync(Setting.MonitorServiceName);
             var lastCheckDate = GlobalSettingService.GetLastCheckReachThresholdTime(globalSetting);
             var testUserId = GlobalSettingService.GetTestIds(globalSetting);
-            await NotificationService.NotificateReachThresholdAsync(new Core.Params.NotificationServiceParam
+            await NotificationService.NotificateReachThresholdAsync(new NotificationServiceParam
             {
                 BatchNo = BATCH_NO,
                 IsRunOnlyFirstBatch = false,
                 IsTest = Setting.IsTest,
+                ServiceName = Setting.MonitorServiceName,
                 LastDate = lastCheckDate,
                 ListTestUserIds = testUserId
             });
