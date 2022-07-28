@@ -18,7 +18,6 @@ COPY src .
 WORKDIR "/src/Fanex.Athena.CronJobs.Site"
 RUN dotnet build "Fanex.Athena.CronJobs.Site.csproj" -c Release -o /app/build
 
-FROM build AS publish
 RUN dotnet publish "Fanex.Athena.CronJobs.Site.csproj" -c Release -o /app/publish
 
 FROM hub.nexdev.net/base/dotnet/core/aspnet:5.0-buster-slim AS base
@@ -33,5 +32,5 @@ WORKDIR /app
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=builder /app/publish .
 ENTRYPOINT ["dotnet", "Fanex.Athena.CronJobs.Site.dll"]
