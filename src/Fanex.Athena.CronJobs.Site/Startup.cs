@@ -1,4 +1,5 @@
 using Fanex.Athena.CronJobs.App.Extensions;
+using Fanex.Athena.CronJobs.App.Filters;
 using Fanex.Athena.CronJobs.App.Settings;
 using Fanex.Data;
 using Fanex.Data.SqlServer;
@@ -70,8 +71,9 @@ namespace Fanex.Athena.CronJobs
         private void AddHangFireService(IServiceCollection services)
         {
             services.Configure<NotificationSetting>(Configuration.GetSection("NotificationSetting"));
-            services.AddHangfireServer( );
+            services.AddHangfireServer();
             services.AddHangFireJobs();
+            GlobalJobFilters.Filters.Add(new GlobalHangfireJobExceptionFilter());
             var redisConfig = Configuration.GetSection("Redis").Get<RedisSetting>();
             var redis = ConnectionMultiplexer.Connect(new ConfigurationOptions
             {

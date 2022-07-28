@@ -14,13 +14,11 @@ namespace Fanex.Athena.CronJobs.App.Jobs
 
         public NotificateChangeSettingJob(INotificationService notificationService
             , IGlobalSettingService globalSettingService
-            , IOptions<NotificationSetting> options
-            , ILogger<NotificateChangeSettingJob> logger)
+            , IOptions<NotificationSetting> options)
         {
             NotificationService = notificationService;
             GlobalSettingService = globalSettingService;
             Setting = options?.Value;
-            logger.LogError("Test Sentry");
         }
 
         public override async Task ExecuteAsync()
