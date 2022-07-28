@@ -31,7 +31,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Repository
             });
         }
 
-        private string BuildReachCust(IEnumerable<CustAccumulateParam> customers)
+        private static string BuildReachCust(IEnumerable<CustAccumulateParam> customers)
         {
             var xmlDoc = new XmlDocument();
             var root = xmlDoc.CreateElement("CustIds");

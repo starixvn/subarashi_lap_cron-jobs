@@ -8,6 +8,7 @@
     <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="5.0.2" />
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.30" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Compilers" Version="4.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
     <PackageReference Include="ONEbook.UM" Version="3.1.3" />

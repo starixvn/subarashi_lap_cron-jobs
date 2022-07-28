@@ -132,7 +132,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
 
         }
 
-        private IEnumerable<CustAccumulateParam> BuildCustAccumulateParam(List<(AccumulateWinloss AccumWL, CustThresholdSetting CustThreshold)> listReachThresholdCust)
+        private static IEnumerable<CustAccumulateParam> BuildCustAccumulateParam(List<(AccumulateWinloss AccumWL, CustThresholdSetting CustThreshold)> listReachThresholdCust)
 
             => listReachThresholdCust.Select(_ => new CustAccumulateParam
             {
