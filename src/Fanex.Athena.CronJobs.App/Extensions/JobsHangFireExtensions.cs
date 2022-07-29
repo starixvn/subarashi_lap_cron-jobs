@@ -15,15 +15,13 @@ namespace Fanex.Athena.CronJobs.App.Extensions
     {
         public static IServiceCollection AddCronJobs(this IServiceCollection services)
         {
-            services.AddHttpContextAccessor();
             services.AddRepository()
-                .AddService()
-                .AddRecurringJobs();
+                .AddService();
 
             return services;
         }
 
-        public static void UserHangFire(this IApplicationBuilder app, string path)
+        public static void UseHangFire(this IApplicationBuilder app, string path)
         {
             app.UseHangfireDashboard(path, new DashboardOptions
             {
@@ -31,6 +29,8 @@ namespace Fanex.Athena.CronJobs.App.Extensions
                 Authorization = new[] { new AllowedAnonymouseAuthorizationFilter() },
                 IgnoreAntiforgeryToken = true
             }) ;
+
+            AddRecurringJobs();
         }
 
         private static IServiceCollection AddRepository(this IServiceCollection services)
@@ -49,11 +49,10 @@ namespace Fanex.Athena.CronJobs.App.Extensions
             return services;
         }
 
-        private static IServiceCollection AddRecurringJobs(this IServiceCollection services)
+        private static void AddRecurringJobs()
         {
             RegisterRecuringTask<NotificateChangeSettingJob>(nameof(NotificateChangeSettingJob), "1/5 * * * *");
             RegisterRecuringTask<NotificateReachThresholdJob>(nameof(NotificateReachThresholdJob), "3/5 * * * *");
-            return services;
         }
 
         private static void RegisterRecuringTask<T>(string taskName, string cronExpress)

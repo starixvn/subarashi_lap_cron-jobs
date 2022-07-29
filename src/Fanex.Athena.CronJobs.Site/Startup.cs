@@ -6,6 +6,7 @@ using Fanex.Data.SqlServer;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,8 +30,9 @@ namespace Fanex.Athena.CronJobs
         {
             ConfigFanexData();
             services.AddControllersWithViews();
-
+            services.AddHttpContextAccessor();
             services.AddSiteHealthChecks(Configuration);
+            services.AddUnderMaintenance(Configuration);
 
             AddHangFireService(services);
 
@@ -54,7 +56,7 @@ namespace Fanex.Athena.CronJobs
             app.UseForwardedHeaders();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UserHangFire("/jobs");
+            app.UseHangFire("/jobs");
             app.UseSiteHealthChecks(Configuration);
 
             app.UseRouting();
@@ -70,9 +72,7 @@ namespace Fanex.Athena.CronJobs
         private void AddHangFireService(IServiceCollection services)
         {
             services.Configure<NotificationSetting>(Configuration.GetSection("NotificationSetting"));
-            services.AddHangfireServer();
-            services.AddCronJobs();
-            GlobalJobFilters.Filters.Add(new GlobalHangfireJobExceptionFilter());
+
             var redisConfig = Configuration.GetSection("Redis").Get<RedisSetting>();
             var redis = ConnectionMultiplexer.Connect(new ConfigurationOptions
             {
@@ -82,14 +82,21 @@ namespace Fanex.Athena.CronJobs
                 DefaultDatabase = redisConfig.Database,
             });
 
+            services.AddScoped<GlobalHangfireJobExceptionFilterAttribute>();
+            services.AddScoped<UMHangfireFilterAttribute>();
+
+            var serviceProvider = services.BuildServiceProvider();
             services.AddHangfire(configuration =>
             {
                 configuration.UseRedisStorage(redis, new Hangfire.Redis.RedisStorageOptions
                 {
                     Prefix = redisConfig.AppName
                 });
+                configuration.UseFilter(serviceProvider.GetService<GlobalHangfireJobExceptionFilterAttribute>());
+                configuration.UseFilter(serviceProvider.GetService<UMHangfireFilterAttribute>());
             });
-            
+            services.AddHangfireServer();
+            services.AddCronJobs();
         }
 
         private void ConfigFanexData()

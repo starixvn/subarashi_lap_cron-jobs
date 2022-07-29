@@ -3,25 +3,38 @@ using Hangfire.Common;
 using Hangfire.Logging;
 using Hangfire.States;
 using Microsoft.Extensions.Logging;
-using System;
+using System.Text;
 
 namespace Fanex.Athena.CronJobs.App.Filters
 {
-    public class GlobalHangfireJobExceptionFilter : JobFilterAttribute, IElectStateFilter
+    public class GlobalHangfireJobExceptionFilterAttribute : JobFilterAttribute, IElectStateFilter
     {
-        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+        private readonly ILogger Logger;
+
+        public GlobalHangfireJobExceptionFilterAttribute(ILogger<GlobalHangfireJobExceptionFilterAttribute> logger)
+        {
+            Logger = logger;
+        }
 
         public void OnStateElection(ElectStateContext context)
         {
             var failedState = context.CandidateState as FailedState;
             if (failedState != null)
             {
-                var jobId = context.BackgroundJob.Id;
                 var exception = failedState.Exception;
-                Logger.ErrorException($"Exception with job {jobId} \n" +
-                    $"{ErrorMessageHelper.GenerateMessage(exception)}"
-                    , exception);
+                Logger.LogError(GenerateJobException(context), exception);
             }
+        }
+
+        private string GenerateJobException(ElectStateContext context)
+        {
+            var failedState = context.CandidateState as FailedState;
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine($"Job Name: {context.BackgroundJob.Job.Type.Name}");
+            stringBuilder.AppendLine($"Job Id: {context.BackgroundJob.Id}");
+            stringBuilder.AppendLine($"Created Time: {context.BackgroundJob.CreatedAt}");
+            stringBuilder.AppendLine(ErrorMessageHelper.GenerateMessage(failedState.Exception));
+            return stringBuilder.ToString();
         }
     }
 }

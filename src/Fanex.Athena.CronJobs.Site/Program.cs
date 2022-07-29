@@ -25,8 +25,8 @@ namespace Fanex.Athena.CronJobs
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
                     webBuilder.UseSentry();
+                    webBuilder.UseStartup<Startup>();
                 });
     }
 }
