@@ -52,7 +52,6 @@ namespace Fanex.Athena.CronJobs
                 app.UseHsts();
             }
             app.UseForwardedHeaders();
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UserHangFire("/jobs");
@@ -72,7 +71,7 @@ namespace Fanex.Athena.CronJobs
         {
             services.Configure<NotificationSetting>(Configuration.GetSection("NotificationSetting"));
             services.AddHangfireServer();
-            services.AddHangFireJobs();
+            services.AddCronJobs();
             GlobalJobFilters.Filters.Add(new GlobalHangfireJobExceptionFilter());
             var redisConfig = Configuration.GetSection("Redis").Get<RedisSetting>();
             var redis = ConnectionMultiplexer.Connect(new ConfigurationOptions

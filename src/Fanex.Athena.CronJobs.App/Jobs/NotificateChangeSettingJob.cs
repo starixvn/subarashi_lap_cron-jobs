@@ -1,6 +1,5 @@
 ﻿using Fanex.Athena.CronJobs.App.Settings;
 using Fanex.Athena.CronJobs.Core.Services;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
