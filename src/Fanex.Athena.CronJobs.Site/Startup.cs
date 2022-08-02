@@ -90,7 +90,8 @@ namespace Fanex.Athena.CronJobs
             {
                 configuration.UseRedisStorage(redis, new Hangfire.Redis.RedisStorageOptions
                 {
-                    Prefix = redisConfig.AppName
+                    Prefix = redisConfig.AppName,
+                    Db = redisConfig.Database
                 });
                 configuration.UseFilter(serviceProvider.GetService<GlobalHangfireJobExceptionFilterAttribute>());
                 configuration.UseFilter(serviceProvider.GetService<UMHangfireFilterAttribute>());

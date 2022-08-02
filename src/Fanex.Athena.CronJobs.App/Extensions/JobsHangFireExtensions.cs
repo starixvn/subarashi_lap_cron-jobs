@@ -25,7 +25,7 @@ namespace Fanex.Athena.CronJobs.App.Extensions
         {
             app.UseHangfireDashboard(path, new DashboardOptions
             {
-                DisplayStorageConnectionString = true,
+                DisplayStorageConnectionString = false,
                 Authorization = new[] { new AllowedAnonymouseAuthorizationFilter() },
                 IgnoreAntiforgeryToken = true
             }) ;
