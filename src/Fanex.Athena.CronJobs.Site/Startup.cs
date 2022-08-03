@@ -6,7 +6,6 @@ using Fanex.Data.SqlServer;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -82,11 +81,9 @@ namespace Fanex.Athena.CronJobs
                 DefaultDatabase = redisConfig.Database,
             });
 
-            services.AddScoped<GlobalHangfireJobExceptionFilterAttribute>();
-            services.AddScoped<UMHangfireFilterAttribute>();
+            services.AddCronJobs();
 
-            var serviceProvider = services.BuildServiceProvider();
-            services.AddHangfire(configuration =>
+            services.AddHangfire((serviceProvider, configuration) =>
             {
                 configuration.UseRedisStorage(redis, new Hangfire.Redis.RedisStorageOptions
                 {
@@ -96,8 +93,8 @@ namespace Fanex.Athena.CronJobs
                 configuration.UseFilter(serviceProvider.GetService<GlobalHangfireJobExceptionFilterAttribute>());
                 configuration.UseFilter(serviceProvider.GetService<UMHangfireFilterAttribute>());
             });
+
             services.AddHangfireServer();
-            services.AddCronJobs();
         }
 
         private void ConfigFanexData()

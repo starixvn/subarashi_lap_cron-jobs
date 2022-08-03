@@ -8,6 +8,7 @@ using Fanex.Data.Repository;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Fanex.Athena.CronJobs.App.Extensions
 {
@@ -16,7 +17,8 @@ namespace Fanex.Athena.CronJobs.App.Extensions
         public static IServiceCollection AddCronJobs(this IServiceCollection services)
         {
             services.AddRepository()
-                .AddService();
+                .AddService()
+                .AddFilter();
 
             return services;
         }
@@ -46,6 +48,13 @@ namespace Fanex.Athena.CronJobs.App.Extensions
         {
             services.AddScoped<IGlobalSettingService, GlobalSettingService>();
             services.AddScoped<INotificationService, NotificationService>();
+            return services;
+        }
+
+        private static IServiceCollection AddFilter(this IServiceCollection services)
+        {
+            services.AddHangfireServer();
+            services.AddCronJobs();
             return services;
         }
 
