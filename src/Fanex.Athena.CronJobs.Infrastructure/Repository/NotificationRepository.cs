@@ -47,7 +47,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Repository
                 root.AppendChild(node);
             }
 
-            return xmlDoc.ToString();
+            return xmlDoc.OuterXml;
 
         }
 
