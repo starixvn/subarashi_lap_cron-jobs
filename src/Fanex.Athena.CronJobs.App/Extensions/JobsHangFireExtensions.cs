@@ -53,8 +53,8 @@ namespace Fanex.Athena.CronJobs.App.Extensions
 
         private static IServiceCollection AddFilter(this IServiceCollection services)
         {
-            services.AddHangfireServer();
-            services.AddCronJobs();
+            services.AddSingleton<GlobalHangfireJobExceptionFilterAttribute>();
+            services.AddSingleton<UMHangfireFilterAttribute>();
             return services;
         }
 
