@@ -2,6 +2,6 @@
 {
     public class AppSetting
     {
-        public string ServerTimeZoneId { get; set; }
+        public int ServerTimeOffSet { get; set; }
     }
 }

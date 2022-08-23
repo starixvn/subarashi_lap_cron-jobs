@@ -39,6 +39,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
                 IsTest = param.IsTest
             });
 
+            var serverDate = GetServerDate();
             if (!changeSettingCusts.Any())
             {
                 return;
@@ -47,7 +48,6 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
             var custIds = string.Join(",", changeSettingCusts.Select(_ => _.CustId));
             var listReachNotifactionChangeSetting = new List<(AccumulateWinloss AccumWL, CustThresholdSetting CustThreshold)>();
 
-            var serverDate = GetServerDate();
             var accumWls = await AccumulateRepository.GetUserAccumulateWinlossAsync(custIds, serverDate);
             foreach (var accumWl in accumWls)
             {
@@ -78,9 +78,8 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
 
         private DateTime GetServerDate()
         {
-            var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(AppSetting.ServerTimeZoneId);
-            var allTImeZone = TimeZoneInfo.GetSystemTimeZones();
-            var date = TimeZoneInfo.ConvertTime(DateTime.Now, timeZoneInfo);
+            var timezone = TimeZoneInfo.CreateCustomTimeZone("GMT-4", TimeSpan.FromHours((double)AppSetting.ServerTimeOffSet), "Custom timezone", "GMT-4");
+            var date = TimeZoneInfo.ConvertTime(DateTime.Now, timezone);
             return date;
         }
 
