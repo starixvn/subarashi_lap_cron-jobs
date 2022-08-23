@@ -1,6 +1,4 @@
-﻿
-
-namespace Fanex.Athena.CronJobs.App.Settings
+﻿namespace Fanex.Athena.CronJobs.Infrastructure.Settings
 {
     public class RedisSetting
     {

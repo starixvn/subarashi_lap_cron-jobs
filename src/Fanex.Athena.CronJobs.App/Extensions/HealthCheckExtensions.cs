@@ -1,5 +1,5 @@
 ﻿using Fanex.Athena.CronJobs.App.HealthChecks;
-using Fanex.Athena.CronJobs.App.Settings;
+using Fanex.Athena.CronJobs.Infrastructure.Settings;
 using Fanex.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;

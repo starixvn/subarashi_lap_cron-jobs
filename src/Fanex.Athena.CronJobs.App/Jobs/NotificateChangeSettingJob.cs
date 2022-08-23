@@ -1,5 +1,5 @@
-﻿using Fanex.Athena.CronJobs.App.Settings;
-using Fanex.Athena.CronJobs.Core.Services;
+﻿using Fanex.Athena.CronJobs.Core.Services;
+using Fanex.Athena.CronJobs.Infrastructure.Settings;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 

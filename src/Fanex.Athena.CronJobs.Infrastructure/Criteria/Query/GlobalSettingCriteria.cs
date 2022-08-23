@@ -5,7 +5,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Criteria.Query
 
     internal class GlobalSettingCriteria : CriteriaBase
     {
-        public string ServiceName { get; init;}
+        public string ServiceName { get; init; }
 
 
         public override string GetSettingKey() => "Acc_WLMonitored_Service_GlobalSettingSel";

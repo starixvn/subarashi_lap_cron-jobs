@@ -3,6 +3,8 @@ using Fanex.Athena.CronJobs.Core.Enums;
 using Fanex.Athena.CronJobs.Core.Params;
 using Fanex.Athena.CronJobs.Core.Repository;
 using Fanex.Athena.CronJobs.Core.Services;
+using Fanex.Athena.CronJobs.Infrastructure.Settings;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +16,16 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
     {
         private INotificationRepository NotificationRepository { get; }
         private IAccumulateRepository AccumulateRepository { get; }
+        private AppSetting AppSetting { get; }
 
 
         public NotificationService(INotificationRepository notificationRepository,
-            IAccumulateRepository accumulateRepository)
+            IAccumulateRepository accumulateRepository,
+            IOptions<AppSetting> options)
         {
             NotificationRepository = notificationRepository;
             AccumulateRepository = accumulateRepository;
+            AppSetting = options?.Value;
         }
 
         public async Task NotificateChangeSettingAsync(NotificationServiceParam param)
@@ -41,7 +46,9 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
 
             var custIds = string.Join(",", changeSettingCusts.Select(_ => _.CustId));
             var listReachNotifactionChangeSetting = new List<(AccumulateWinloss AccumWL, CustThresholdSetting CustThreshold)>();
-            var accumWls = await AccumulateRepository.GetUserAccumulateWinlossAsync(custIds, DateTime.Now);
+
+            var serverDate = GetServerDate();
+            var accumWls = await AccumulateRepository.GetUserAccumulateWinlossAsync(custIds, serverDate);
             foreach (var accumWl in accumWls)
             {
                 var cust = changeSettingCusts.FirstOrDefault(_ => _.CustId == accumWl.CustId);
@@ -67,6 +74,14 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
                 NotificationType = (int)NotificationType.ChangeThresholdSetting
             });
 
+        }
+
+        private DateTime GetServerDate()
+        {
+            var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(AppSetting.ServerTimeZoneId);
+            var allTImeZone = TimeZoneInfo.GetSystemTimeZones();
+            var date = TimeZoneInfo.ConvertTime(DateTime.Now, timeZoneInfo);
+            return date;
         }
 
         public async Task NotificateReachThresholdAsync(NotificationServiceParam param)

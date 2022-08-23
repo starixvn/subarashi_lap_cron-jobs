@@ -8,6 +8,7 @@
     <PackageReference Include="Fanex.Data" Version="4.2.2" />
     <PackageReference Include="Fanex.Data.Repository" Version="4.2.2" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
