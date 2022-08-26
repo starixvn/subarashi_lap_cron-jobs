@@ -23,7 +23,7 @@ namespace Fanex.Athena.CronJobs.App.Jobs
         public override async Task ExecuteAsync()
         {
             var globalSetting = await GlobalSettingService.GetAllSettingAsync(Setting.MonitorServiceName);
-            var testUserIds = GlobalSettingService.GetTestIds(globalSetting);
+            var testUserIds = await GlobalSettingService.GetTestIdsAsync(Setting.SuperUUSServiceName);
             var lastScanTime = GlobalSettingService.GetLastCheckChangeSettingTime(globalSetting);
 
             await NotificationService.NotificateChangeSettingAsync(new Core.Params.NotificationServiceParam

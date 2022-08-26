@@ -4,6 +4,8 @@
     {
         public string MonitorServiceName { get; set; }
 
+        public string SuperUUSServiceName { get; set; }
+
         public bool IsTest { get; set; }
     }
 }
