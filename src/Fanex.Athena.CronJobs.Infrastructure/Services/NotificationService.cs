@@ -30,6 +30,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
 
         public async Task NotificateChangeSettingAsync(NotificationServiceParam param)
         {
+            var serverDate = GetServerDate();
             var changeSettingCusts = await NotificationRepository.GetCustChangeThresholdSettingAsync(new ChangeThresholdSettingParam
             {
                 IsDeposit = true,
@@ -47,7 +48,6 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
             var custIds = string.Join(",", changeSettingCusts.Select(_ => _.CustId));
             var listReachNotifactionChangeSetting = new List<(AccumulateWinloss AccumWL, CustThresholdSetting CustThreshold)>();
 
-            var serverDate = GetServerDate();
             var accumWls = await AccumulateRepository.GetUserAccumulateWinlossAsync(custIds, serverDate);
             foreach (var accumWl in accumWls)
             {
@@ -64,12 +64,11 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
             }
 
             var custAccumulateParam = BuildCustAccumulateParam(listReachNotifactionChangeSetting);
-            var maxDateTime = accumWls.Max(_ => _.UpdatedTime);
 
             await NotificationRepository.InsertNotificationAsync(new InsertNotificationParam
             {
                 Customers = custAccumulateParam,
-                LastScanSettingDate = maxDateTime,
+                LastScanSettingDate = serverDate,
                 ServiceName = param.ServiceName,
                 NotificationType = (int)NotificationType.ChangeThresholdSetting
             });
