@@ -8,7 +8,6 @@ using Fanex.Data.Repository;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace Fanex.Athena.CronJobs.App.Extensions
 {
@@ -30,7 +29,7 @@ namespace Fanex.Athena.CronJobs.App.Extensions
                 DisplayStorageConnectionString = false,
                 Authorization = new[] { new AllowedAnonymouseAuthorizationFilter() },
                 IgnoreAntiforgeryToken = true
-            }) ;
+            });
 
             AddRecurringJobs();
         }

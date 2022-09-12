@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using System;
 
-namespace Fanex.Athena.CronJobs
+namespace Fanex.Athena.CronJobs.Site
 {
     public class Program
     {

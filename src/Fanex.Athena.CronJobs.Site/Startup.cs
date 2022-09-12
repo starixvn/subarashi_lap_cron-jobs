@@ -13,7 +13,7 @@ using StackExchange.Redis;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Fanex.Athena.CronJobs
+namespace Fanex.Athena.CronJobs.Site
 {
     public class Startup
     {

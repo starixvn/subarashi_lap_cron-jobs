@@ -1,6 +1,6 @@
 ﻿namespace Fanex.Athena.CronJobs.Core.Params
 {
-    public class GetSettingThresholdParam 
+    public class GetSettingThresholdParam
     {
         public string CustList { get; set; }
 

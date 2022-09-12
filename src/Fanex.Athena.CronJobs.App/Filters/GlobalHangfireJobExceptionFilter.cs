@@ -1,6 +1,5 @@
 ﻿using Fanex.Athena.CronJobs.App.Helpers;
 using Hangfire.Common;
-using Hangfire.Logging;
 using Hangfire.States;
 using Microsoft.Extensions.Logging;
 using System.Text;
