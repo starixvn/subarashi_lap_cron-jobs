@@ -18,7 +18,7 @@ pipeline {
         script{
           pipelineLib.beginSonarQubeForMsBuild("Lap.CronJobs", "Legion / Lap Cron Jobs", "/d:sonar.cs.opencover.reportsPaths=%WORKSPACE%\\CoverageReports\\*.xml /d:sonar.cs.vstest.reportsPaths=%WORKSPACE%\\TestResults\\*.trx")
 
-          pipelineLib.msBuild16("Fanex.Athena.CronJobs")
+          pipelineLib.msBuild16("Fanex.Athena.CronJobs.sln")
         }
       }
     }
