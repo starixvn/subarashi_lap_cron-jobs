@@ -27,7 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{52C1F773-E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{7D763B41-75DE-4223-B892-2F513A9BC2C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.Athena.CronJobs.Infrastructure.UnitTests", "Test\Fanex.Athena.CronJobs.Infrastructure.Test\Fanex.Athena.CronJobs.Infrastructure.UnitTests.csproj", "{5AB2D34F-8B37-484C-8B0D-47645C756DE8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.Athena.CronJobs.Infrastructure.UnitTest", "Test\Fanex.Athena.CronJobs.Infrastructure.UnitTest\Fanex.Athena.CronJobs.Infrastructure.UnitTest.csproj", "{608D0F0D-55AD-4DCB-8978-CCA20A555A8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,10 +51,10 @@ Global
 		{EDC9285E-34CC-4AFF-AABF-9D9B891DED96}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDC9285E-34CC-4AFF-AABF-9D9B891DED96}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDC9285E-34CC-4AFF-AABF-9D9B891DED96}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5AB2D34F-8B37-484C-8B0D-47645C756DE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5AB2D34F-8B37-484C-8B0D-47645C756DE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5AB2D34F-8B37-484C-8B0D-47645C756DE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5AB2D34F-8B37-484C-8B0D-47645C756DE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{608D0F0D-55AD-4DCB-8978-CCA20A555A8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{608D0F0D-55AD-4DCB-8978-CCA20A555A8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{608D0F0D-55AD-4DCB-8978-CCA20A555A8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{608D0F0D-55AD-4DCB-8978-CCA20A555A8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,7 +67,7 @@ Global
 		{CDA82B32-15E4-4315-B948-B9E612FCAD2F} = {31C6DC71-1233-44BB-B946-EC92D333E66D}
 		{C20B07E4-9086-4EB8-B0E4-778B829CC741} = {7D763B41-75DE-4223-B892-2F513A9BC2C8}
 		{EDC9285E-34CC-4AFF-AABF-9D9B891DED96} = {C20B07E4-9086-4EB8-B0E4-778B829CC741}
-		{5AB2D34F-8B37-484C-8B0D-47645C756DE8} = {52C1F773-ED59-4E40-A1FF-AB2C4D6B7329}
+		{608D0F0D-55AD-4DCB-8978-CCA20A555A8F} = {52C1F773-ED59-4E40-A1FF-AB2C4D6B7329}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9A7ED7FE-9ED2-4BE2-8D38-1FDB1CBC026C}

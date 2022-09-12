@@ -2,6 +2,10 @@
 using Fanex.Data.Repository;
 using Fanex.Athena.CronJobs.Infrastructure.Criteria.Query;
 using Fanex.Athena.CronJobs.Core.DTO;
+using NSubstitute;
+using NUnit.Framework;
+using System;
+using System.Threading.Tasks;
 
 namespace Fanex.Athena.CronJobs.Infrastructure.UnitTests.Repository
 {
