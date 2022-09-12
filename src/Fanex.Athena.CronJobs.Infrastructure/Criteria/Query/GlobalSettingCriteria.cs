@@ -3,7 +3,7 @@
 namespace Fanex.Athena.CronJobs.Infrastructure.Criteria.Query
 {
 
-    internal class GlobalSettingCriteria : CriteriaBase
+    public class GlobalSettingCriteria : CriteriaBase
     {
         public string ServiceName { get; init; }
 

@@ -3,7 +3,7 @@
 
 namespace Fanex.Athena.CronJobs.Infrastructure.Criteria.Query
 {
-    internal class GetCustThresholdSettingCriteria : CriteriaBase
+    public class GetCustThresholdSettingCriteria : CriteriaBase
     {
         public string CustList { get; init; }
 

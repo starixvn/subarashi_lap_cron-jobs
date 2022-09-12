@@ -3,7 +3,7 @@ using System;
 
 namespace Fanex.Athena.CronJobs.Infrastructure.Criteria.Query
 {
-    internal class GetUserAccumulateWinlossCriteria : CriteriaBase
+    public class GetUserAccumulateWinlossCriteria : CriteriaBase
     {
         public string CustIds { get; init; }
 

@@ -3,7 +3,7 @@ using System;
 
 namespace Fanex.Athena.CronJobs.Infrastructure.Criteria.Query
 {
-    internal class GetLastestAccumulateCriteria : CriteriaBase
+    public class GetLastestAccumulateCriteria : CriteriaBase
     {
         public DateTime LastCheckTIme { get; init; }
 

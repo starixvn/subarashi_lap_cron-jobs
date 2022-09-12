@@ -3,7 +3,7 @@ using System;
 
 namespace Fanex.Athena.CronJobs.Infrastructure.Criteria.Command
 {
-    internal class NotificationCommand : NonQueryCommand
+    public class NotificationCommand : NonQueryCommand
     {
         public string CustReached { get; init; }
 

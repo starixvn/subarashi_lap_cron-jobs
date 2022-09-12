@@ -3,7 +3,7 @@ using System;
 
 namespace Fanex.Athena.CronJobs.Infrastructure.Criteria.Query
 {
-    internal class GetChangeThresholdSettingCriteria : CriteriaBase
+    public class GetChangeThresholdSettingCriteria : CriteriaBase
     {
         public int SportType { get; init; }
 
