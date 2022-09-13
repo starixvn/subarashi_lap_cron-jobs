@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Functions SiteId="35" SiteName="CronJobs">
   <Function Name="MonitorAccumulate">
-    <Setting Key="Acc_WLMonitored_Service_GlobalSettingSel" SpName="Acc_WLMonitored_Service_GlobalSettingSel" DbName="DBAGE.bodb02.bodbLicenseeNet" />
-    <Setting Key="Acc_Dep_WLMonitored_Service_AccumulatedDataSel" SpName="Acc_Dep_WLMonitored_Service_AccumulatedDataSel" DbName="DBAGE.bodb02.bodbLicenseeNet" />
-    <Setting Key="Acc_Dep_WLMonitored_Service_LatestAccumulatedDataSel" SpName="Acc_Dep_WLMonitored_Service_LatestAccumulatedDataSel" DbName="DBAGE.bodb02.bodbLicenseeNet" />
-    <Setting Key="Acc_Dep_WLMonitored_Service_ReachHistoryIns" SpName="Acc_Dep_WLMonitored_Service_ReachHistoryIns" DbName="DBAGE.bodb02.bodbLicenseeNet" />
+    <Setting Key="Acc_WLMonitored_Service_GlobalSettingSel" SpName="Acc_WLMonitored_Service_GlobalSettingSel" DbName="DBEXT.bodb02.bodbLicenseeNet" />
+    <Setting Key="Acc_Dep_WLMonitored_Service_AccumulatedDataSel" SpName="Acc_Dep_WLMonitored_Service_AccumulatedDataSel" DbName="DBEXT.bodb02.bodbLicenseeNet" />
+    <Setting Key="Acc_Dep_WLMonitored_Service_LatestAccumulatedDataSel" SpName="Acc_Dep_WLMonitored_Service_LatestAccumulatedDataSel" DbName="DBEXT.bodb02.bodbLicenseeNet" />
+    <Setting Key="Acc_Dep_WLMonitored_Service_ReachHistoryIns" SpName="Acc_Dep_WLMonitored_Service_ReachHistoryIns" DbName="DBEXT.bodb02.bodbLicenseeNet" />
     <Setting Key="Acc_WLMonitored_Service_GetSettingByCust" SpName="Acc_WLMonitored_Service_GetSettingByCust" DbName="DBCUST.CustDB.bodbLicenseeNet" />
     <Setting Key="Acc_WLMonitored_Service_GetChangedSettingList" SpName="Acc_WLMonitored_Service_GetChangedSettingList" DbName="DBCUST.CustDB.bodbLicenseeNet" />
   </Function>
