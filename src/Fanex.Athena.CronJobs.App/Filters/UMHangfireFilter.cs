@@ -2,9 +2,11 @@
 using Hangfire.Common;
 using Hangfire.Server;
 using ONEbook.UM.Services;
+using System;
 
 namespace Fanex.Athena.CronJobs.App.Filters
 {
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Interface)]
     public class UMHangfireFilterAttribute : JobFilterAttribute, IClientFilter, IServerFilter
     {
         public IMaintenanceService MaintenanceService { get; }
@@ -24,6 +26,7 @@ namespace Fanex.Athena.CronJobs.App.Filters
 
         public void OnCreated(CreatedContext filterContext)
         {
+            //Nothing to do
         }
 
         public void OnPerforming(PerformingContext filterContext)
@@ -36,6 +39,7 @@ namespace Fanex.Athena.CronJobs.App.Filters
 
         public void OnPerformed(PerformedContext filterContext)
         {
+            //Nothing to do
         }
     }
 }

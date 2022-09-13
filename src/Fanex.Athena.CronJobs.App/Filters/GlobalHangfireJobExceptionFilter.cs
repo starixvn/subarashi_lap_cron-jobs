@@ -2,10 +2,12 @@
 using Hangfire.Common;
 using Hangfire.States;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Text;
 
 namespace Fanex.Athena.CronJobs.App.Filters
 {
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Interface)]
     public class GlobalHangfireJobExceptionFilterAttribute : JobFilterAttribute, IElectStateFilter
     {
         private readonly ILogger Logger;
@@ -25,7 +27,7 @@ namespace Fanex.Athena.CronJobs.App.Filters
             }
         }
 
-        private string GenerateJobException(ElectStateContext context)
+        private static string GenerateJobException(ElectStateContext context)
         {
             var failedState = context.CandidateState as FailedState;
             var stringBuilder = new StringBuilder();
