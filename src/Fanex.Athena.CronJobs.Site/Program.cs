@@ -5,7 +5,7 @@ using System;
 
 namespace Fanex.Athena.CronJobs.Site
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
