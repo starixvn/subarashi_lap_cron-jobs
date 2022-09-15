@@ -20,7 +20,7 @@ namespace Fanex.Athena.CronJobs.App.Filters
         public void OnStateElection(ElectStateContext context)
         {
             var failedState = context.CandidateState as FailedState;
-            if (failedState != null)
+            if (failedState is not null)
             {
                 var exception = failedState.Exception;
                 Logger.LogError(GenerateJobException(context), exception);

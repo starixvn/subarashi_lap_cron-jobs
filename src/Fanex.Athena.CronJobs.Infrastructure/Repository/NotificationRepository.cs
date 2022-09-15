@@ -5,6 +5,7 @@ using Fanex.Athena.CronJobs.Infrastructure.Criteria.Command;
 using Fanex.Athena.CronJobs.Infrastructure.Criteria.Query;
 using Fanex.Data.Repository;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -40,9 +41,9 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Repository
             {
                 var node = xmlDoc.CreateElement("Cust");
                 node.SetAttribute("CustId", cust.CustId.ToString());
-                node.SetAttribute("AccumWL", cust.AccumWL.ToString());
+                node.SetAttribute("AccumWL", cust.AccumWL.ToString(CultureInfo.InvariantCulture));
                 node.SetAttribute("SportType", cust.SportType.ToString());
-                node.SetAttribute("WinningThreshold", cust.WinningThreshold.ToString());
+                node.SetAttribute("WinningThreshold", cust.WinningThreshold.ToString(CultureInfo.InvariantCulture));
 
                 root.AppendChild(node);
             }

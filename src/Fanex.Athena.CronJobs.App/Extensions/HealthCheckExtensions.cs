@@ -30,7 +30,7 @@ namespace Fanex.Athena.CronJobs.App.Extensions
 
         public static void UseSiteHealthChecks(this IApplicationBuilder app, IConfiguration configuration)
         {
-            Func<HttpContext, HealthReport, Task> customResponseWriter = async (context, report) =>
+            static async Task customResponseWriter(HttpContext context, HealthReport report)
             {
                 var result = JsonConvert.SerializeObject(
                     new
@@ -41,7 +41,7 @@ namespace Fanex.Athena.CronJobs.App.Extensions
 
                 context.Response.ContentType = MediaTypeNames.Application.Json;
                 await context.Response.WriteAsync(result);
-            };
+            }
 
             var accessKey = configuration["HealthCheck:AccessKey"];
             app.UseWhen(context =>
