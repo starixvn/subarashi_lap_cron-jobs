@@ -23,14 +23,31 @@ namespace Fanex.Athena.CronJobs.Infrastructure.UnitTests.Repository
         }
 
         [Test]
-        public async Task GetUserAccumulateWinlossAsync_WhenCall_ReceiveFullParam()
+        public async Task GetUserAccumulateWinlossAsync_WhenCall_ReceiveCorrectParam()
         {
+            //Arrange
             var custId = "1";
             var date = DateTime.Now;
 
+            //Action
             await AccumulateRepository.GetUserAccumulateWinlossAsync(custId, date);
 
+            //Assert
             await DynamicRepository.Received().FetchAsync<AccumulateWinloss>(Arg.Is<GetUserAccumulateWinlossCriteria>(_ => _.CustIds == custId && _.CurrentDate == date));
+        }
+
+        [Test]
+        public async Task GetLastestAccumulateWinlossAsync_WhenCall_ReceiveCorrectParam()
+        {
+            //Arrange
+            var date = DateTime.Now;
+            var batchCount = 2000;
+
+            //Action
+            await AccumulateRepository.GetLastestAccumulateWinlossAsync(date, batchCount);
+
+            //Assert
+            await DynamicRepository.Received().FetchAsync<AccumulateWinloss>(Arg.Is<GetLastestAccumulateCriteria>(_ => _.LastCheckTIme == date && _.BatchNo == batchCount));
         }
     }
 }
