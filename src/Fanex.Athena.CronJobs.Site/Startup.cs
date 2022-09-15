@@ -1,5 +1,6 @@
 using Fanex.Athena.CronJobs.App.Extensions;
 using Fanex.Athena.CronJobs.App.Filters;
+using Fanex.Athena.CronJobs.App.Middlewares;
 using Fanex.Athena.CronJobs.Infrastructure.Settings;
 using Fanex.Data;
 using Fanex.Data.SqlServer;
@@ -41,7 +42,7 @@ namespace Fanex.Athena.CronJobs.Site
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UsePing();
-
+            app.UseMiddleware<ErrorHandler>();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

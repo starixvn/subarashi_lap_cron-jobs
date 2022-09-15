@@ -8,7 +8,12 @@
     <UserSecretsId>243f0711-0315-4b4b-bf56-27b5584a21b1</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
+    <CodeAnalysisRuleSet>..\..\.sonarlint\lap.cronjobscsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="..\..\.sonarlint\lap.cronjobs\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Fanex.Data.SqlServer" Version="4.2.2" />
@@ -29,6 +34,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="SpConfig\FanexSpName.PROD_1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="SpConfig\FanexSpName.AWS.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

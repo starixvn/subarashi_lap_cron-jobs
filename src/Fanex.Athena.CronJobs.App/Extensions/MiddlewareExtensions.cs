@@ -34,6 +34,31 @@ namespace Fanex.Athena.CronJobs.App.Extensions
                 await next();
             });
         }
+
+        public static void UseErrorHandler(this IApplicationBuilder app)
+        {
+            //mvc
+            app.UseWhen(context => !context.Request.IsAjaxRequest() && !context.Request.IsStaticRequest(),
+                builder => builder.UseStatusCodePagesWithReExecute("/Home/Error", "?code={0}"));
+
+            //api
+            app.UseWhen(context => context.Request.IsAjaxRequest(),
+                builder => builder.UseStatusCodePages(async context =>
+                {
+                    var response = context.HttpContext.Response;
+                    response.ContentType = "application/json";
+                    var errorObject = new
+                    {
+                        statusCode = response.StatusCode,
+                        msg = "An error occurred while processing your request",
+                        isSuccess = false
+                    };
+                    await response.WriteAsync(JsonConvert.SerializeObject(errorObject));
+                }));
+
+            //logging
+            app.UseMiddleware<ErrorHandler>();
+        }
     }
 
     internal class ContextInMemoryHelper : IHttpContextHelper
