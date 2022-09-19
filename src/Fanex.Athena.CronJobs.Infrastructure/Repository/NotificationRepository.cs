@@ -32,26 +32,6 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Repository
             });
         }
 
-        private static string BuildReachCust(IEnumerable<CustAccumulateParam> customers)
-        {
-            var xmlDoc = new XmlDocument();
-            var root = xmlDoc.CreateElement("CustIds");
-            xmlDoc.AppendChild(root);
-            foreach (var cust in customers)
-            {
-                var node = xmlDoc.CreateElement("Cust");
-                node.SetAttribute("CustId", cust.CustId.ToString());
-                node.SetAttribute("AccumWL", cust.AccumWL.ToString(CultureInfo.InvariantCulture));
-                node.SetAttribute("SportType", cust.SportType.ToString());
-                node.SetAttribute("WinningThreshold", cust.WinningThreshold.ToString(CultureInfo.InvariantCulture));
-
-                root.AppendChild(node);
-            }
-
-            return xmlDoc.OuterXml;
-
-        }
-
         public Task<IEnumerable<CustThresholdSetting>> GetCustThresholdSettingAsync(GetSettingThresholdParam param)
             => DynamicRepository.FetchAsync<CustThresholdSetting>(new GetCustThresholdSettingCriteria
             {
@@ -71,5 +51,28 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Repository
                 IsTest = param.IsTest,
                 IsDeposit = param.IsDeposit
             });
+
+        private static string BuildReachCust(IEnumerable<CustAccumulateParam> customers)
+        {
+            var xmlDoc = new XmlDocument();
+            var root = xmlDoc.CreateElement("CustIds");
+            xmlDoc.AppendChild(root);
+            if (customers is not null)
+            {
+                foreach (var cust in customers)
+                {
+                    var node = xmlDoc.CreateElement("Cust");
+                    node.SetAttribute("CustId", cust.CustId.ToString());
+                    node.SetAttribute("AccumWL", cust.AccumWL.ToString(CultureInfo.InvariantCulture));
+                    node.SetAttribute("SportType", cust.SportType.ToString());
+                    node.SetAttribute("WinningThreshold", cust.WinningThreshold.ToString(CultureInfo.InvariantCulture));
+
+                    root.AppendChild(node);
+                }
+            }
+
+            return xmlDoc.OuterXml;
+
+        }
     }
 }

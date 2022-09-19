@@ -42,7 +42,6 @@ namespace Fanex.Athena.CronJobs.Site
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UsePing();
-            app.UseMiddleware<ErrorHandler>();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -53,6 +52,7 @@ namespace Fanex.Athena.CronJobs.Site
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseMiddleware<ErrorHandler>();
             app.UseForwardedHeaders();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
