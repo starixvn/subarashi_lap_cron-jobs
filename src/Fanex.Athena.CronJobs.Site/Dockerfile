@@ -1,6 +1,6 @@
 FROM hub.nexdev.net/base/dotnet/core/sdk:5.0.102-ca-patch-buster-slim AS builder
 WORKDIR /src
-COPY ["NuGet.Config", "."]
+RUN dotnet nuget add source http://nuget.nexdev.net/api/v2
 
 COPY ["src/Fanex.Athena.CronJobs.Core/Fanex.Athena.CronJobs.Core.csproj", "./Fanex.Athena.CronJobs.Core/"]
 RUN dotnet restore "Fanex.Athena.CronJobs.Core/Fanex.Athena.CronJobs.Core.csproj" -v n

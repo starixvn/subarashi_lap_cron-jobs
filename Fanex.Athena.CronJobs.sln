@@ -20,14 +20,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".config", ".config", "{A99290D9-0D67-48E2-89BC-4D053B389A58}"
 	ProjectSection(SolutionItems) = preProject
 		.gitlab-ci.yml = .gitlab-ci.yml
-		NuGet.Config = NuGet.Config
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{52C1F773-ED59-4E40-A1FF-AB2C4D6B7329}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{7D763B41-75DE-4223-B892-2F513A9BC2C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.Athena.CronJobs.Infrastructure.UnitTest", "Test\Fanex.Athena.CronJobs.Infrastructure.UnitTest\Fanex.Athena.CronJobs.Infrastructure.UnitTest.csproj", "{608D0F0D-55AD-4DCB-8978-CCA20A555A8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanex.Athena.CronJobs.Infrastructure.UnitTest", "Test\Fanex.Athena.CronJobs.Infrastructure.UnitTest\Fanex.Athena.CronJobs.Infrastructure.UnitTest.csproj", "{608D0F0D-55AD-4DCB-8978-CCA20A555A8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
