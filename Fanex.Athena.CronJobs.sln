@@ -27,7 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{52C1F773
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{7D763B41-75DE-4223-B892-2F513A9BC2C8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanex.Athena.CronJobs.Infrastructure.UnitTest", "tests\Fanex.Athena.CronJobs.Infrastructure.UnitTest\Fanex.Athena.CronJobs.Infrastructure.UnitTest.csproj", "{608D0F0D-55AD-4DCB-8978-CCA20A555A8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanex.Athena.CronJobs.Infrastructure.UnitTests", "tests\Fanex.Athena.CronJobs.Infrastructure.UnitTest\Fanex.Athena.CronJobs.Infrastructure.UnitTests.csproj", "{608D0F0D-55AD-4DCB-8978-CCA20A555A8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
