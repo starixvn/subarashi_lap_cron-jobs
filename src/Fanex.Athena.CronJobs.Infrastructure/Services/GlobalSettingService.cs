@@ -27,7 +27,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
         public DateTime GetLastCheckReachThresholdTime(IEnumerable<ServiceSetting> settings)
         {
             var setting = settings.FirstOrDefault(_ => string.Equals(_.SettingName, LAST_CHECK_TIME_SETTING_NAME, StringComparison.OrdinalIgnoreCase));
-            if (string.IsNullOrWhiteSpace(setting.SettingValue))
+            if (string.IsNullOrWhiteSpace(setting?.SettingValue))
             {
                 throw new InvalidCastException("Null or empty setting value");
             }
@@ -37,7 +37,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
         public DateTime GetLastCheckChangeSettingTime(IEnumerable<ServiceSetting> settings)
         {
             var setting = settings.FirstOrDefault(_ => string.Equals(_.SettingName, LAST_SCAN_SETTING_DATE, StringComparison.OrdinalIgnoreCase));
-            if (string.IsNullOrWhiteSpace(setting.SettingValue))
+            if (string.IsNullOrWhiteSpace(setting?.SettingValue))
             {
                 throw new InvalidCastException("Null or empty setting value");
             }

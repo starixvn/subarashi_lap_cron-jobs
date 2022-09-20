@@ -14,7 +14,7 @@ using System.Xml.Linq;
 
 namespace Fanex.Athena.CronJobs.Infrastructure.UnitTest.Repository
 {
-    public class NotificationRepositoryTest
+    public class NotificationRepositoryTests
     {
         private IDynamicRepository _dynamicRepository;
 
