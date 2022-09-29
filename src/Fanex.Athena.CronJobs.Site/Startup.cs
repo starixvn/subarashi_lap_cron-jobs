@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using StackExchange.Redis;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -96,7 +97,10 @@ namespace Fanex.Athena.CronJobs.Site
                 configuration.UseFilter(serviceProvider.GetService<UMHangfireFilterAttribute>());
             });
 
-            services.AddHangfireServer();
+            services.AddHangfireServer(options =>
+            {
+                options.SchedulePollingInterval = TimeSpan.FromSeconds(1);
+            });
         }
 
         private void ConfigFanexData()

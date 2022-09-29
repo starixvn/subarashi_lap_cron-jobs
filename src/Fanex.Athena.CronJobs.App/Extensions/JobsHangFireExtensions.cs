@@ -59,8 +59,8 @@ namespace Fanex.Athena.CronJobs.App.Extensions
 
         private static void AddRecurringJobs()
         {
-            RegisterRecuringTask<NotificateChangeSettingJob>(nameof(NotificateChangeSettingJob), "1/5 * * * *");
-            RegisterRecuringTask<NotificateReachThresholdJob>(nameof(NotificateReachThresholdJob), "3/5 * * * *");
+            RegisterRecuringTask<NotificateChangeSettingJob>(nameof(NotificateChangeSettingJob), "2/5 * * * * *");
+            RegisterRecuringTask<NotificateReachThresholdJob>(nameof(NotificateReachThresholdJob), "5/30 * * * * *");
         }
 
         private static void RegisterRecuringTask<T>(string taskName, string cronExpress)
