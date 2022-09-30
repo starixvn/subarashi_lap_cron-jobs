@@ -40,15 +40,11 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
                 IsTest = param.IsTest
             });
 
-            if (!changeSettingCusts.Any())
-            {
-                return;
-            }
+            var changeSettingIds = GetChangeSettingCustIds(changeSettingCusts);
 
-            var custIds = string.Join(",", changeSettingCusts.Select(_ => _.CustId));
             var listReachNotifactionChangeSetting = new List<(AccumulateWinloss AccumWL, CustThresholdSetting CustThreshold)>();
 
-            var accumWls = await AccumulateRepository.GetUserAccumulateWinlossAsync(custIds, serverDate);
+            var accumWls = await AccumulateRepository.GetUserAccumulateWinlossAsync(changeSettingIds, serverDate);
             foreach (var accumWl in accumWls)
             {
                 var cust = changeSettingCusts.FirstOrDefault(_ => _.CustId == accumWl.CustId);
@@ -56,11 +52,6 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
                 {
                     listReachNotifactionChangeSetting.Add((accumWl, cust));
                 }
-            }
-
-            if (!listReachNotifactionChangeSetting.Any())
-            {
-                return;
             }
 
             var custAccumulateParam = BuildCustAccumulateParam(listReachNotifactionChangeSetting);
@@ -75,12 +66,6 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
 
         }
 
-        private DateTime GetServerDate()
-        {
-            var timezone = TimeZoneInfo.CreateCustomTimeZone("LAP DB Timezone", TimeSpan.FromHours((double)AppSetting.ServerTimeOffSet), "LAP DB Timezone", "LAP DB Timezone");
-            var date = TimeZoneInfo.ConvertTime(DateTime.Now, timezone);
-            return date;
-        }
         public async Task NotificateReachThresholdAsync(NotificationServiceParam param)
 
         {
@@ -98,6 +83,23 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
                 lastDate = accumulateWL.Max(_ => _.UpdatedTime);
             }
 
+        }
+
+        private static string GetChangeSettingCustIds(IEnumerable<CustThresholdSetting> changeSettingCusts)
+        {
+            if (changeSettingCusts == null || !changeSettingCusts.Any())
+            {
+                return string.Empty;
+            }
+
+            return string.Join(",", changeSettingCusts.Select(_ => _.CustId));
+        }
+
+        private DateTime GetServerDate()
+        {
+            var timezone = TimeZoneInfo.CreateCustomTimeZone("LAP DB Timezone", TimeSpan.FromHours((double)AppSetting.ServerTimeOffSet), "LAP DB Timezone", "LAP DB Timezone");
+            var date = TimeZoneInfo.ConvertTime(DateTime.Now, timezone);
+            return date;
         }
 
         private async Task NotificateReachThresholdCustAsync(IEnumerable<AccumulateWinloss> accumulateWLs, NotificationServiceParam param)
@@ -126,11 +128,6 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
                 {
                     listReachThresholdCust.Add((accumWL, info));
                 }
-            }
-
-            if (!listReachThresholdCust.Any())
-            {
-                return;
             }
 
             var custAccumulateParams = BuildCustAccumulateParam(listReachThresholdCust);
