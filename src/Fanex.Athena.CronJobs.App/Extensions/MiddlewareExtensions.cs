@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Fanex.Athena.CronJobs.Core.Logs;
+using Fanex.Athena.CronJobs.Infrastructure.Logs;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +23,11 @@ namespace Fanex.Athena.CronJobs.App.Extensions
             services.AddSingleton<IUMRestClient, UMRestClient>();
             services.AddSingleton<IHttpContextHelper, ContextInMemoryHelper>();
             services.AddSingleton<IMaintenanceService, MaintenanceService>();
+        }
+
+        public static void AddLogAggregate(this IServiceCollection services)
+        {
+            services.AddScoped<ILogAggregate, LogAggregate>();
         }
 
         public static void UsePing(this IApplicationBuilder app)

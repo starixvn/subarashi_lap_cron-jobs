@@ -1,10 +1,12 @@
 ﻿using Fanex.Athena.CronJobs.Core.DTO;
 using Fanex.Athena.CronJobs.Core.Enums;
+using Fanex.Athena.CronJobs.Core.Logs;
 using Fanex.Athena.CronJobs.Core.Params;
 using Fanex.Athena.CronJobs.Core.Repository;
 using Fanex.Athena.CronJobs.Core.Services;
 using Fanex.Athena.CronJobs.Infrastructure.Settings;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,19 +19,23 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
         private INotificationRepository NotificationRepository { get; }
         private IAccumulateRepository AccumulateRepository { get; }
         private AppSetting AppSetting { get; }
+        private ILogAggregate LogAggregater { get; }
 
 
         public NotificationService(INotificationRepository notificationRepository,
             IAccumulateRepository accumulateRepository,
-            IOptions<AppSetting> options)
+            IOptions<AppSetting> options,
+            ILogAggregate logAggregater)
         {
             NotificationRepository = notificationRepository;
             AccumulateRepository = accumulateRepository;
             AppSetting = options?.Value;
+            LogAggregater = logAggregater;
         }
 
         public async Task NotificateChangeSettingAsync(NotificationServiceParam param)
         {
+            await LogAggregater.AppendLogAsync($"Begin Notifcate Change Setting Service. Param: {JsonConvert.SerializeObject(param)}");
             var serverDate = GetServerDate();
             var changeSettingCusts = await NotificationRepository.GetCustChangeThresholdSettingAsync(new ChangeThresholdSettingParam
             {
@@ -41,10 +47,12 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
             });
 
             var changeSettingIds = GetChangeSettingCustIds(changeSettingCusts);
+            await LogAggregater.AppendLogAsync($"Change setting cust from last scan date {param.LastDate}: {JsonConvert.SerializeObject(changeSettingCusts)}");
 
             var listReachNotifactionChangeSetting = new List<(AccumulateWinloss AccumWL, CustThresholdSetting CustThreshold)>();
 
             var accumWls = await AccumulateRepository.GetUserAccumulateWinlossAsync(changeSettingIds, serverDate);
+            await LogAggregater.AppendLogAsync($"Accum win loss from date {serverDate}: {JsonConvert.SerializeObject(accumWls)}");
             foreach (var accumWl in accumWls)
             {
                 var cust = changeSettingCusts.FirstOrDefault(_ => _.CustId == accumWl.CustId);
@@ -55,25 +63,28 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
             }
 
             var custAccumulateParam = BuildCustAccumulateParam(listReachNotifactionChangeSetting);
-
-            await NotificationRepository.InsertNotificationAsync(new InsertNotificationParam
+            var insertParam = new InsertNotificationParam
             {
                 Customers = custAccumulateParam,
                 LastScanSettingDate = serverDate,
                 ServiceName = param.ServiceName,
                 NotificationType = (int)NotificationType.ChangeThresholdSetting
-            });
+            };
+
+            await LogAggregater.AppendLogAsync($"Insert change setting notification param: {JsonConvert.SerializeObject(insertParam)}");
+            await NotificationRepository.InsertNotificationAsync(insertParam);
 
         }
 
         public async Task NotificateReachThresholdAsync(NotificationServiceParam param)
-
         {
+            await LogAggregater.AppendLogAsync($"Begin Notifcate reach threshold. Param: {JsonConvert.SerializeObject(param)}");
             var isLastBatch = false;
             var lastDate = param.LastDate;
             while (!isLastBatch)
             {
                 var accumulateWL = await AccumulateRepository.GetLastestAccumulateWinlossAsync(lastDate, param.BatchNo);
+                await LogAggregater.AppendLogAsync($"Accum win loss from {lastDate}: {JsonConvert.SerializeObject(accumulateWL)}");
                 if (!accumulateWL.Any())
                 {
                     return;
@@ -120,6 +131,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
                 SuperList = param.ListTestUserIds,
                 SportType = (int)SportType.SportBook
             });
+            await LogAggregater.AppendLogAsync($"Threshold for cust in last accum winloss batch: {JsonConvert.SerializeObject(thresholdInfos)}");
 
             foreach (var info in thresholdInfos)
             {
@@ -132,13 +144,18 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
 
             var custAccumulateParams = BuildCustAccumulateParam(listReachThresholdCust);
             var lastCheckTime = accumulateWLs.Max(_ => _.UpdatedTime);
-            await NotificationRepository.InsertNotificationAsync(new InsertNotificationParam
+
+            var insertParam = new InsertNotificationParam
             {
                 Customers = custAccumulateParams,
                 LastCheckTime = lastCheckTime,
                 ServiceName = param.ServiceName,
                 NotificationType = (int)NotificationType.ReachThreshold
-            });
+
+            };
+
+            await LogAggregater.AppendLogAsync($"Insert reach threshold notification param: {JsonConvert.SerializeObject(insertParam)}");
+            await NotificationRepository.InsertNotificationAsync(insertParam);
 
         }
 

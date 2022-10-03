@@ -1,4 +1,5 @@
-﻿using Fanex.Athena.CronJobs.Core.Params;
+﻿using Fanex.Athena.CronJobs.Core.Logs;
+using Fanex.Athena.CronJobs.Core.Params;
 using Fanex.Athena.CronJobs.Core.Services;
 using Fanex.Athena.CronJobs.Infrastructure.Settings;
 using Microsoft.Extensions.Options;
@@ -14,14 +15,15 @@ namespace Fanex.Athena.CronJobs.App.Jobs
         private IGlobalSettingService GlobalSettingService { get; }
         private NotificationSetting Setting { get; }
 
-        public NotificateReachThresholdJob(INotificationService notificationService, IGlobalSettingService globalSettingService, IOptions<NotificationSetting> options)
+        public NotificateReachThresholdJob(INotificationService notificationService, IGlobalSettingService globalSettingService, IOptions<NotificationSetting> options, ILogAggregate logAggregate)
+            : base(logAggregate)
         {
             NotificationService = notificationService;
             GlobalSettingService = globalSettingService;
             Setting = options?.Value;
         }
 
-        public override async Task ExecuteAsync()
+        protected override async Task DoJobAsync()
         {
             var globalSetting = await GlobalSettingService.GetAllSettingAsync(Setting.MonitorServiceName);
             var lastCheckDate = GlobalSettingService.GetLastCheckReachThresholdTime(globalSetting);

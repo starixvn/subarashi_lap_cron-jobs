@@ -1,4 +1,5 @@
-﻿using Fanex.Athena.CronJobs.Core.Services;
+﻿using Fanex.Athena.CronJobs.Core.Logs;
+using Fanex.Athena.CronJobs.Core.Services;
 using Fanex.Athena.CronJobs.Infrastructure.Settings;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
@@ -13,14 +14,16 @@ namespace Fanex.Athena.CronJobs.App.Jobs
 
         public NotificateChangeSettingJob(INotificationService notificationService
             , IGlobalSettingService globalSettingService
-            , IOptions<NotificationSetting> options)
+            , IOptions<NotificationSetting> options
+            , ILogAggregate logAggregate)
+            :base (logAggregate)
         {
             NotificationService = notificationService;
             GlobalSettingService = globalSettingService;
             Setting = options?.Value;
         }
 
-        public override async Task ExecuteAsync()
+        protected override async Task DoJobAsync()
         {
             var globalSetting = await GlobalSettingService.GetAllSettingAsync(Setting.MonitorServiceName);
             var testUserIds = await GlobalSettingService.GetTestIdsAsync(Setting.SuperUUSServiceName);

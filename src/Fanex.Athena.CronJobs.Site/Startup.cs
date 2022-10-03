@@ -34,6 +34,7 @@ namespace Fanex.Athena.CronJobs.Site
             services.AddHttpContextAccessor();
             services.AddSiteHealthChecks(Configuration);
             services.AddUnderMaintenance(Configuration);
+            services.AddLogAggregate();
 
             AddHangFireService(services);
 
