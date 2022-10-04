@@ -35,7 +35,8 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
 
         public async Task NotificateChangeSettingAsync(NotificationServiceParam param)
         {
-            await LogAggregater.AppendLogAsync($"Begin Notifcate Change Setting Service. Param: {JsonConvert.SerializeObject(param)}");
+            await LogAggregater.AppendHeaderAsync("Begin Notifcate Change Setting Service");
+            await LogAggregater.AppendLogAsync($"Param: {JsonConvert.SerializeObject(param)}");
             var serverDate = GetServerDate();
             var changeSettingCusts = await NotificationRepository.GetCustChangeThresholdSettingAsync(new ChangeThresholdSettingParam
             {
@@ -78,7 +79,8 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
 
         public async Task NotificateReachThresholdAsync(NotificationServiceParam param)
         {
-            await LogAggregater.AppendLogAsync($"Begin Notifcate reach threshold. Param: {JsonConvert.SerializeObject(param)}");
+            await LogAggregater.AppendHeaderAsync("Begin Notifcate Reach Threshold Service");
+            await LogAggregater.AppendLogAsync($"Param: {JsonConvert.SerializeObject(param)}");
             var isLastBatch = false;
             var lastDate = param.LastDate;
             while (!isLastBatch)

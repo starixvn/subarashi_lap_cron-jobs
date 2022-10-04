@@ -29,13 +29,20 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Logs
             return logmsg;
         }
 
-        public void SendLogAsync(LogLevel logLevel)
+        public void SendLog(LogLevel logLevel)
         {
             if (Builder.Length == 0)
             {
                 return;
             }
             _logger.Log(logLevel, Builder.ToString());
+            Builder = new StringBuilder();
+        }
+
+        public Task AppendHeaderAsync(string message)
+        {
+            Builder.AppendLine($"{message.ToUpper()}");
+            return Task.CompletedTask;
         }
     }
 }

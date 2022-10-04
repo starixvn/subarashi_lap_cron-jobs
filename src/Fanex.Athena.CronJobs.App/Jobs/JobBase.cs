@@ -26,10 +26,10 @@ namespace Fanex.Athena.CronJobs.App.Jobs
             }
             catch (System.Exception)
             {
-                _logAggregate.SendLogAsync(LogLevel.Information);
+                _logAggregate.SendLog(LogLevel.Information);
                 throw;
             }
-            _logAggregate.SendLogAsync(LogLevel.Information);
+            _logAggregate.SendLog(LogLevel.Information);
         }
 
         protected abstract Task DoJobAsync();
