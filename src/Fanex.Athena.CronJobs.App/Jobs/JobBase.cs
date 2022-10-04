@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace Fanex.Athena.CronJobs.App.Jobs
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1694:An abstract class should have both abstract and concrete methods", Justification = "Wrapper class for hangfire")]
     public abstract class JobBase : IJobTask
     {
         private readonly ILogAggregate _logAggregate;
@@ -24,7 +23,7 @@ namespace Fanex.Athena.CronJobs.App.Jobs
             {
                 await DoJobAsync();
             }
-            catch (System.Exception)
+            catch 
             {
                 _logAggregate.SendLog(LogLevel.Information);
                 throw;

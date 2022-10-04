@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Sentry;
 using System;
-using System.Linq;
 
 namespace Fanex.Athena.CronJobs.Site
 {

@@ -5,9 +5,9 @@ namespace Fanex.Athena.CronJobs.Core.Logs
 {
     public interface ILogAggregate
     {
-        Task AppendHeaderAsync(string message);
+        void AppendHeader(string message);
 
-        Task AppendLogAsync(string message);
+        void AppendLog(string message);
 
         string GetAggregateMsg();
 
