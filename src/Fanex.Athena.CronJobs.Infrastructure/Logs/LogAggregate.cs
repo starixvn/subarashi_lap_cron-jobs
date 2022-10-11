@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Fanex.Athena.CronJobs.Infrastructure.Logs
 {
