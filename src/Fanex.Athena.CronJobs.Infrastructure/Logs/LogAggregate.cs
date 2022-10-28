@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Fanex.Athena.CronJobs.Infrastructure.Logs
 {
@@ -17,11 +16,9 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Logs
             _logger = logger;
         }
 
-        public Task AppendLogAsync(string message)
-        {
-            Builder.AppendLine($"{DateTime.Now}: {message}");
-            return Task.CompletedTask;
-        }
+        public void AppendLog(string message)        
+           => Builder.AppendLine($"{DateTime.Now}: {message}");
+        
 
         public string GetAggregateMsg()
         {
@@ -29,13 +26,18 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Logs
             return logmsg;
         }
 
-        public void SendLogAsync(LogLevel logLevel)
+        public void SendLog(LogLevel logLevel)
         {
             if (Builder.Length == 0)
             {
                 return;
             }
             _logger.Log(logLevel, Builder.ToString());
+            Builder = new StringBuilder();
         }
+
+        public void AppendHeader(string message)        
+           => Builder.AppendLine($"{message.ToUpperInvariant()}");
+        
     }
 }

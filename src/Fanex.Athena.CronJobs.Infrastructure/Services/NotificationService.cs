@@ -35,7 +35,8 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
 
         public async Task NotificateChangeSettingAsync(NotificationServiceParam param)
         {
-            await LogAggregater.AppendLogAsync($"Begin Notifcate Change Setting Service. Param: {JsonConvert.SerializeObject(param)}");
+            LogAggregater.AppendHeader("Begin Notifcate Change Setting Service");
+            LogAggregater.AppendLog($"Param: {JsonConvert.SerializeObject(param)}");
             var serverDate = GetServerDate();
             var changeSettingCusts = await NotificationRepository.GetCustChangeThresholdSettingAsync(new ChangeThresholdSettingParam
             {
@@ -47,12 +48,12 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
             });
 
             var changeSettingIds = GetChangeSettingCustIds(changeSettingCusts);
-            await LogAggregater.AppendLogAsync($"Change setting cust from last scan date {param.LastDate}: {JsonConvert.SerializeObject(changeSettingCusts)}");
+            LogAggregater.AppendLog($"Change setting cust from last scan date {param.LastDate}: {JsonConvert.SerializeObject(changeSettingCusts)}");
 
             var listReachNotifactionChangeSetting = new List<(AccumulateWinloss AccumWL, CustThresholdSetting CustThreshold)>();
 
             var accumWls = await AccumulateRepository.GetUserAccumulateWinlossAsync(changeSettingIds, serverDate);
-            await LogAggregater.AppendLogAsync($"Accum win loss from date {serverDate}: {JsonConvert.SerializeObject(accumWls)}");
+            LogAggregater.AppendLog($"Accum win loss from date {serverDate}: {JsonConvert.SerializeObject(accumWls)}");
             foreach (var accumWl in accumWls)
             {
                 var cust = changeSettingCusts.FirstOrDefault(_ => _.CustId == accumWl.CustId);
@@ -71,20 +72,21 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
                 NotificationType = (int)NotificationType.ChangeThresholdSetting
             };
 
-            await LogAggregater.AppendLogAsync($"Insert change setting notification param: {JsonConvert.SerializeObject(insertParam)}");
+            LogAggregater.AppendLog($"Insert change setting notification param: {JsonConvert.SerializeObject(insertParam)}");
             await NotificationRepository.InsertNotificationAsync(insertParam);
 
         }
 
         public async Task NotificateReachThresholdAsync(NotificationServiceParam param)
         {
-            await LogAggregater.AppendLogAsync($"Begin Notifcate reach threshold. Param: {JsonConvert.SerializeObject(param)}");
+            LogAggregater.AppendHeader("Begin Notifcate Reach Threshold Service");
+            LogAggregater.AppendLog($"Param: {JsonConvert.SerializeObject(param)}");
             var isLastBatch = false;
             var lastDate = param.LastDate;
             while (!isLastBatch)
             {
                 var accumulateWL = await AccumulateRepository.GetLastestAccumulateWinlossAsync(lastDate, param.BatchNo);
-                await LogAggregater.AppendLogAsync($"Accum win loss from {lastDate}: {JsonConvert.SerializeObject(accumulateWL)}");
+                LogAggregater.AppendLog($"Accum win loss from {lastDate}: {JsonConvert.SerializeObject(accumulateWL)}");
                 if (!accumulateWL.Any())
                 {
                     return;
@@ -131,7 +133,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
                 SuperList = param.ListTestUserIds,
                 SportType = (int)SportType.SportBook
             });
-            await LogAggregater.AppendLogAsync($"Threshold for cust in last accum winloss batch: {JsonConvert.SerializeObject(thresholdInfos)}");
+            LogAggregater.AppendLog($"Threshold for cust in last accum winloss batch: {JsonConvert.SerializeObject(thresholdInfos)}");
 
             foreach (var info in thresholdInfos)
             {
@@ -154,7 +156,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
 
             };
 
-            await LogAggregater.AppendLogAsync($"Insert reach threshold notification param: {JsonConvert.SerializeObject(insertParam)}");
+            LogAggregater.AppendLog($"Insert reach threshold notification param: {JsonConvert.SerializeObject(insertParam)}");
             await NotificationRepository.InsertNotificationAsync(insertParam);
 
         }

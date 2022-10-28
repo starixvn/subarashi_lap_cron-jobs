@@ -1,6 +1,8 @@
+using Fanex.Athena.CronJobs.Infrastructure.Logs;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Sentry;
 using System;
 
 namespace Fanex.Athena.CronJobs.Site
@@ -25,7 +27,19 @@ namespace Fanex.Athena.CronJobs.Site
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseSentry();
+                    webBuilder.UseSentry(option =>
+                    {
+                        option.BeforeSend = @event =>
+                        {
+                            if (@event.Level == Sentry.Protocol.SentryLevel.Info && @event.Logger.Contains(nameof(LogAggregate)) && @event.LogEntry.Message is not null)
+                            {
+                                var header = @event.LogEntry.Message.Split(Environment.NewLine)[0];
+                                @event.SetFingerprint(new[] { @event.Environment, header, @event.Level.ToString() });
+                            }
+           
+                            return @event;
+                        };
+                    });
                     webBuilder.UseStartup<Startup>();
                 });
     }
