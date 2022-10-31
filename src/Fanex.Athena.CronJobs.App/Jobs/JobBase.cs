@@ -23,12 +23,11 @@ namespace Fanex.Athena.CronJobs.App.Jobs
             {
                 await DoJobAsync();
             }
-            catch 
+            finally
             {
                 _logAggregate.SendLog(LogLevel.Information);
-                throw;
             }
-            _logAggregate.SendLog(LogLevel.Information);
+
         }
 
         protected abstract Task DoJobAsync();
