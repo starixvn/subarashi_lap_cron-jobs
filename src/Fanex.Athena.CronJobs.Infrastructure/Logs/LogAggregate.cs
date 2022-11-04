@@ -16,9 +16,9 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Logs
             _logger = logger;
         }
 
-        public void AppendLog(string message)        
+        public void AppendLog(string message)
            => Builder.AppendLine($"{DateTime.Now}: {message}");
-        
+
 
         public string GetAggregateMsg()
         {
@@ -36,8 +36,8 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Logs
             Builder = new StringBuilder();
         }
 
-        public void AppendHeader(string message)        
+        public void AppendHeader(string message)
            => Builder.AppendLine($"{message.ToUpperInvariant()}");
-        
+
     }
 }

@@ -3,7 +3,6 @@ using Fanex.Athena.CronJobs.Core.ExecuteTasks;
 using Fanex.Athena.CronJobs.Core.Logs;
 using Hangfire;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading.Tasks;
 
 namespace Fanex.Athena.CronJobs.App.Jobs

@@ -5,10 +5,10 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
 using System;
-using System.Net;
-using System.Threading.Tasks;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Fanex.Athena.CronJobs.App.UnitTests.Middlewares
 {

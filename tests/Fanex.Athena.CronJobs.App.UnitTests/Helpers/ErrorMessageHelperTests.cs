@@ -5,10 +5,6 @@ using Microsoft.Data.SqlClient;
 using NSubstitute;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Fanex.Athena.CronJobs.App.UnitTests.Helpers
 {
@@ -63,7 +59,7 @@ namespace Fanex.Athena.CronJobs.App.UnitTests.Helpers
         {
             //Arrange
             var innerException = new Exception("Inner");
-            var exception = new Exception("Outer",innerException);
+            var exception = new Exception("Outer", innerException);
 
             //Action
             var result = ErrorMessageHelper.GenerateMessage(exception);

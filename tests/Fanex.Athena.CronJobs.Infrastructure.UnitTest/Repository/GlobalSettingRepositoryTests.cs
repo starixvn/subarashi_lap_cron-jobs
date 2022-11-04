@@ -4,10 +4,9 @@ using Fanex.Athena.CronJobs.Infrastructure.Repository;
 using Fanex.Data.Repository;
 using NSubstitute;
 using NUnit.Framework;
-using System.Collections;
 using System.Threading.Tasks;
 
-namespace Fanex.Athena.CronJobs.Infrastructure.UnitTest.Repository
+namespace Fanex.Athena.CronJobs.Infrastructure.UnitTests.Repository
 {
     public class GlobalSettingRepositoryTests
     {

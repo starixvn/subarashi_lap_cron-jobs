@@ -11,7 +11,6 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Fanex.Athena.CronJobs.App.UnitTests.Jobs
@@ -36,7 +35,7 @@ namespace Fanex.Athena.CronJobs.App.UnitTests.Jobs
         public async Task ExecuteAsync_WhenCall_LogAggregateReceiveCall()
         {
             //Arrange
-            var setting = new List<ServiceSetting>() { new ()};
+            var setting = new List<ServiceSetting>() { new() };
             var date = DateTime.Now;
             var listTestUserId = "1,2";
             _options.Value.ReturnsForAnyArgs(new NotificationSetting());

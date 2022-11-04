@@ -12,7 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Fanex.Athena.CronJobs.Infrastructure.UnitTest.Repository
+namespace Fanex.Athena.CronJobs.Infrastructure.UnitTests.Repository
 {
     public class NotificationRepositoryTests
     {
@@ -42,7 +42,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.UnitTest.Repository
             await repo.InsertNotificationAsync(param);
 
             //Assert
-            await _dynamicRepository.Received().ExecuteAsync((Arg.Is<NotificationCommand>(_ => CorrectRootName(_.CustReached) && NoChildXml(_.CustReached))));
+            await _dynamicRepository.Received().ExecuteAsync(Arg.Is<NotificationCommand>(_ => CorrectRootName(_.CustReached) && NoChildXml(_.CustReached)));
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.UnitTest.Repository
             await repo.InsertNotificationAsync(param);
 
             //Assert
-            await _dynamicRepository.Received().ExecuteAsync((Arg.Is<NotificationCommand>(_ => CorrectRootName(_.CustReached) && NoChildXml(_.CustReached))));
+            await _dynamicRepository.Received().ExecuteAsync(Arg.Is<NotificationCommand>(_ => CorrectRootName(_.CustReached) && NoChildXml(_.CustReached)));
         }
 
         [Test]
@@ -76,10 +76,10 @@ namespace Fanex.Athena.CronJobs.Infrastructure.UnitTest.Repository
             await repo.InsertNotificationAsync(param);
 
             //Assert
-            await _dynamicRepository.Received().ExecuteAsync((Arg.Is<NotificationCommand>(_ => CorrectRootName(_.CustReached)
+            await _dynamicRepository.Received().ExecuteAsync(Arg.Is<NotificationCommand>(_ => CorrectRootName(_.CustReached)
                 && !NoChildXml(_.CustReached)
                 && XmlHaveChild(_.CustReached, reachCustomers.First())
-                )));
+                ));
         }
 
         [Test]

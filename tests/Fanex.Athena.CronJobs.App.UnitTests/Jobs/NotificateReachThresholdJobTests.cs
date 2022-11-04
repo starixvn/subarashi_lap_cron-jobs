@@ -11,7 +11,6 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Fanex.Athena.CronJobs.App.UnitTests.Jobs
@@ -52,7 +51,7 @@ namespace Fanex.Athena.CronJobs.App.UnitTests.Jobs
             //Assert
             await _notificationService.Received()
                 .NotificateReachThresholdAsync(Arg
-                .Is<NotificationServiceParam>(_ => _.LastDate == date 
+                .Is<NotificationServiceParam>(_ => _.LastDate == date
                                             && _.ListTestUserIds == listTestUserId
                                             && _.BatchNo == 2000));
             _logAggregate.Received().SendLog(LogLevel.Information);

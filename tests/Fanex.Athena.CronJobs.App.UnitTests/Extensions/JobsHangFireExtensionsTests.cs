@@ -1,14 +1,8 @@
 ﻿using Fanex.Athena.CronJobs.App.Extensions;
-using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Fanex.Athena.CronJobs.App.UnitTests.Extensions
 {

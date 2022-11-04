@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Fanex.Athena.CronJobs.Infrastructure.UnitTest.Services
+namespace Fanex.Athena.CronJobs.Infrastructure.UnitTests.Services
 {
     public class GlobalSettingSergviceTests
     {
@@ -41,7 +41,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.UnitTest.Services
             await service.GetAllSettingAsync(serviceName);
 
             //Assert
-            await SettingRepository.Received().GetSetting(Arg.Is<string>(serviceName));
+            await SettingRepository.Received().GetSetting(Arg.Is(serviceName));
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.UnitTest.Services
             var service = CreateService();
 
             //Assert
-             Assert.Throws<ArgumentNullException>(() => service.GetLastCheckReachThresholdTime(null));
+            Assert.Throws<ArgumentNullException>(() => service.GetLastCheckReachThresholdTime(null));
         }
 
         [Test]
@@ -135,7 +135,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.UnitTest.Services
             await service.GetLastCheckChangeSettingTimeAsync(serviceName);
 
             //Assert
-            await SettingRepository.Received().GetSetting(Arg.Is<string>(serviceName));
+            await SettingRepository.Received().GetSetting(Arg.Is(serviceName));
         }
 
         [Test]
@@ -151,7 +151,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.UnitTest.Services
             await service.GetLastCheckReachThresholdTimeAsync(serviceName);
 
             //Assert
-            await SettingRepository.Received().GetSetting(Arg.Is<string>(serviceName));
+            await SettingRepository.Received().GetSetting(Arg.Is(serviceName));
         }
 
         [Test]
@@ -165,7 +165,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.UnitTest.Services
             await service.GetTestIdsAsync(serviceName);
 
             //Assert
-            await SettingRepository.Received().GetSetting(Arg.Is<string>(serviceName));
+            await SettingRepository.Received().GetSetting(Arg.Is(serviceName));
         }
 
         [Test]
