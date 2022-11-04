@@ -36,7 +36,7 @@ namespace Fanex.Athena.CronJobs.Site
                                 var header = @event.LogEntry.Message.Split(Environment.NewLine)[0];
                                 @event.SetFingerprint(new[] { @event.Environment, header, @event.Level.ToString() });
                             }
-           
+
                             return @event;
                         };
                     });

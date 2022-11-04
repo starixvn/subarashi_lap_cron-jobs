@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 
 namespace Fanex.Athena.CronJobs.Core.Logs
 {
@@ -13,5 +12,5 @@ namespace Fanex.Athena.CronJobs.Core.Logs
 
         void SendLog(LogLevel logLevel);
     }
- 
+
 }

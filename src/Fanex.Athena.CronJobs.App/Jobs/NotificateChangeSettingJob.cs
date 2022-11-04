@@ -16,7 +16,7 @@ namespace Fanex.Athena.CronJobs.App.Jobs
             , IGlobalSettingService globalSettingService
             , IOptions<NotificationSetting> options
             , ILogAggregate logAggregate)
-            :base (logAggregate)
+            : base(logAggregate)
         {
             NotificationService = notificationService;
             GlobalSettingService = globalSettingService;

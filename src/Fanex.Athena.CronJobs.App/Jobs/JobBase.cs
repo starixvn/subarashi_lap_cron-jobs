@@ -3,7 +3,6 @@ using Fanex.Athena.CronJobs.Core.ExecuteTasks;
 using Fanex.Athena.CronJobs.Core.Logs;
 using Hangfire;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading.Tasks;
 
 namespace Fanex.Athena.CronJobs.App.Jobs
@@ -23,12 +22,11 @@ namespace Fanex.Athena.CronJobs.App.Jobs
             {
                 await DoJobAsync();
             }
-            catch 
+            finally
             {
                 _logAggregate.SendLog(LogLevel.Information);
-                throw;
             }
-            _logAggregate.SendLog(LogLevel.Information);
+
         }
 
         protected abstract Task DoJobAsync();

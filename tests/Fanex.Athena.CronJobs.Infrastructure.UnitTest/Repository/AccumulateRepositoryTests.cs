@@ -1,7 +1,7 @@
-﻿using Fanex.Athena.CronJobs.Infrastructure.Repository;
-using Fanex.Data.Repository;
+﻿using Fanex.Athena.CronJobs.Core.DTO;
 using Fanex.Athena.CronJobs.Infrastructure.Criteria.Query;
-using Fanex.Athena.CronJobs.Core.DTO;
+using Fanex.Athena.CronJobs.Infrastructure.Repository;
+using Fanex.Data.Repository;
 using NSubstitute;
 using NUnit.Framework;
 using System;

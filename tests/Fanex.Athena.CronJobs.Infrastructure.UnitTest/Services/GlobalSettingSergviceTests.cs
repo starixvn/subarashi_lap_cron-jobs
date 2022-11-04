@@ -5,31 +5,28 @@ using NSubstitute;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Fanex.Athena.CronJobs.Infrastructure.UnitTest.Services
+namespace Fanex.Athena.CronJobs.Infrastructure.UnitTests.Services
 {
     public class GlobalSettingSergviceTests
     {
-        private const string TEST_USER_SETTING_NAME = "SuperUUS";
         private const string LAST_CHECK_TIME_SETTING_NAME = "LastCheckTime";
         private const string LAST_SCAN_SETTING_DATE = "LastScanSettingDate";
         private const string FULL_DATETIME_STRING = "yyyy-MM-dd HH:mm:ss.fffffff";
 
-        private IGlobalSettingRepository _settingRepository { get; set; }
+        private IGlobalSettingRepository SettingRepository { get; set; }
 
         [SetUp]
         public void SetUp()
         {
-            _settingRepository = Substitute.For<IGlobalSettingRepository>();
+            SettingRepository = Substitute.For<IGlobalSettingRepository>();
         }
 
         [TearDown]
         public void TearDown()
         {
-            _settingRepository = null;
+            SettingRepository = null;
         }
 
         [Test]
@@ -44,7 +41,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.UnitTest.Services
             await service.GetAllSettingAsync(serviceName);
 
             //Assert
-            await _settingRepository.Received().GetSetting(Arg.Is<string>(serviceName));
+            await SettingRepository.Received().GetSetting(Arg.Is(serviceName));
         }
 
         [Test]
@@ -54,7 +51,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.UnitTest.Services
             var service = CreateService();
 
             //Assert
-             Assert.Throws<ArgumentNullException>(() => service.GetLastCheckReachThresholdTime(null));
+            Assert.Throws<ArgumentNullException>(() => service.GetLastCheckReachThresholdTime(null));
         }
 
         [Test]
@@ -132,13 +129,13 @@ namespace Fanex.Athena.CronJobs.Infrastructure.UnitTest.Services
             var service = CreateService();
             var serviceName = "test";
             var param = GetServiceSettings();
-            _settingRepository.GetSetting(serviceName).Returns(param);
+            SettingRepository.GetSetting(serviceName).Returns(param);
 
             //Action
             await service.GetLastCheckChangeSettingTimeAsync(serviceName);
 
             //Assert
-            await _settingRepository.Received().GetSetting(Arg.Is<string>(serviceName));
+            await SettingRepository.Received().GetSetting(Arg.Is(serviceName));
         }
 
         [Test]
@@ -148,13 +145,13 @@ namespace Fanex.Athena.CronJobs.Infrastructure.UnitTest.Services
             var service = CreateService();
             var serviceName = "test";
             var param = GetServiceSettings();
-            _settingRepository.GetSetting(serviceName).Returns(param);
+            SettingRepository.GetSetting(serviceName).Returns(param);
 
             //Action
             await service.GetLastCheckReachThresholdTimeAsync(serviceName);
 
             //Assert
-            await _settingRepository.Received().GetSetting(Arg.Is<string>(serviceName));
+            await SettingRepository.Received().GetSetting(Arg.Is(serviceName));
         }
 
         [Test]
@@ -168,7 +165,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.UnitTest.Services
             await service.GetTestIdsAsync(serviceName);
 
             //Assert
-            await _settingRepository.Received().GetSetting(Arg.Is<string>(serviceName));
+            await SettingRepository.Received().GetSetting(Arg.Is(serviceName));
         }
 
         [Test]
@@ -192,13 +189,13 @@ namespace Fanex.Athena.CronJobs.Infrastructure.UnitTest.Services
             var result = service.GetTestIds(settings);
 
             //Assert
-            Assert.True(string.IsNullOrEmpty(result));
+            Assert.That(string.IsNullOrEmpty(result), Is.True);
         }
 
         private GlobalSettingService CreateService()
-            => new GlobalSettingService(_settingRepository);
+            => new(SettingRepository);
 
-        private IEnumerable<ServiceSetting> GetServiceSettings()
+        private static IEnumerable<ServiceSetting> GetServiceSettings()
             => new List<ServiceSetting>
             {
                 new(){ SettingName = LAST_CHECK_TIME_SETTING_NAME, SettingValue = "2022-01-01"},
