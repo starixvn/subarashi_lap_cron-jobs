@@ -1,5 +1,4 @@
 ﻿using Fanex.Athena.CronJobs.App.Filters;
-using Fanex.Athena.CronJobs.App.Jobs;
 using Fanex.Athena.CronJobs.Core.Repository;
 using Fanex.Athena.CronJobs.Core.Services;
 using Fanex.Athena.CronJobs.Infrastructure.Repository;
@@ -13,7 +12,7 @@ namespace Fanex.Athena.CronJobs.App.Extensions
 {
     public static class JobsHangFireExtensions
     {
-        public static IServiceCollection AddCronJobs(this IServiceCollection services)
+        public static IServiceCollection AddCronJobsDI(this IServiceCollection services)
         {
             services.AddRepository()
                 .AddService()
@@ -30,8 +29,6 @@ namespace Fanex.Athena.CronJobs.App.Extensions
                 Authorization = new[] { new AllowedAnonymouseAuthorizationFilter() },
                 IgnoreAntiforgeryToken = true
             });
-
-            AddRecurringJobs();
         }
 
         private static IServiceCollection AddRepository(this IServiceCollection services)
@@ -40,6 +37,7 @@ namespace Fanex.Athena.CronJobs.App.Extensions
             services.AddScoped<IAccumulateRepository, AccumulateRepository>();
             services.AddScoped<IGlobalSettingRepository, GlobalSettingRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
+            services.AddScoped<IBellNotificationRepository, BellNotificationRepository>();
             return services;
         }
 
@@ -47,6 +45,7 @@ namespace Fanex.Athena.CronJobs.App.Extensions
         {
             services.AddScoped<IGlobalSettingService, GlobalSettingService>();
             services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IBellNotificationService, BellNotificationService>();
             return services;
         }
 
@@ -55,18 +54,6 @@ namespace Fanex.Athena.CronJobs.App.Extensions
             services.AddSingleton<GlobalHangfireJobExceptionFilterAttribute>();
             services.AddSingleton<UMHangfireFilterAttribute>();
             return services;
-        }
-
-        private static void AddRecurringJobs()
-        {
-            RegisterRecuringTask<NotificateChangeSettingJob>(nameof(NotificateChangeSettingJob), "1/5 * * * * *");
-            RegisterRecuringTask<NotificateReachThresholdJob>(nameof(NotificateReachThresholdJob), "1/30 * * * * *");
-        }
-
-        private static void RegisterRecuringTask<T>(string taskName, string cronExpress)
-            where T : JobBase
-        {
-            RecurringJob.AddOrUpdate<T>(taskName, (job) => job.ExecuteAsync(), cronExpress);
         }
     }
 }

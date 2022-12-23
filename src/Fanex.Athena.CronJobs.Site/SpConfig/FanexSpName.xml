@@ -7,5 +7,10 @@
     <Setting Key="Acc_Dep_WLMonitored_Service_ReachHistoryIns" SpName="Acc_Dep_WLMonitored_Service_ReachHistoryIns" DbName="DBEXT.bodb02.bodbLicenseeNet" />
     <Setting Key="Acc_WLMonitored_Service_GetSettingByCust" SpName="Acc_WLMonitored_Service_GetSettingByCust" DbName="DBCUST.CustDB.bodbLicenseeNet" />
     <Setting Key="Acc_WLMonitored_Service_GetChangedSettingList" SpName="Acc_WLMonitored_Service_GetChangedSettingList" DbName="DBCUST.CustDB.bodbLicenseeNet" />
+    <Setting Key="Lrf_MessageIns" SpName="Lrf_MessageIns" DbName="DBCUST.SiteConfig.bodbLicenseeNet" />
+    <Setting Key="DailyJob_CheckTasksStatus" SpName="DailyJob_CheckTasksStatus" DbName="DBWH.bodb_DWRS.bodbLicenseeNet" />
+    <Setting Key="Lrf_AbnormalBet_GetLicByDate" SpName="Lrf_AbnormalBet_GetLicByDate" DbName="DBWH.bodb_DWRS.bodbLicenseeNet" />
+    <Setting Key="Lrf_SystemSettingsByNameSel" SpName="Lrf_SystemSettingsByNameSel" DbName="DBCUST.SiteConfig.bodbLicenseeNet" />
+    <Setting Key="Lrf_SystemSettingsUpd" SpName="Lrf_SystemSettingsUpd" DbName="DBCUST.SiteConfig.bodbLicenseeNet" />
   </Function>
 </Functions>
