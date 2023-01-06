@@ -1,5 +1,6 @@
 ﻿using Fanex.Athena.CronJobs.App.Extensions;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using NUnit.Framework;
@@ -10,7 +11,6 @@ namespace Fanex.Athena.CronJobs.App.UnitTests.Extensions
     {
         private IServiceCollection ServiceCollection { get; set; }
         private IApplicationBuilder ApplicationBuilder { get; set; }
-
 
         [SetUp]
         public void SetUp()
@@ -23,7 +23,7 @@ namespace Fanex.Athena.CronJobs.App.UnitTests.Extensions
         public void AddCronJobs_WhenCall_NotThrowException()
         {
             //Assert
-            Assert.DoesNotThrow(() => JobsHangFireExtensions.AddCronJobs(ServiceCollection));
+            Assert.DoesNotThrow(() => JobsHangFireExtensions.AddCronJobsDI(ServiceCollection));
         }
     }
 }

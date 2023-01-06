@@ -1,5 +1,6 @@
 using Fanex.Athena.CronJobs.App.Extensions;
 using Fanex.Athena.CronJobs.App.Filters;
+using Fanex.Athena.CronJobs.App.Jobs;
 using Fanex.Athena.CronJobs.App.Middlewares;
 using Fanex.Athena.CronJobs.Infrastructure.Settings;
 using Fanex.Data;
@@ -37,7 +38,6 @@ namespace Fanex.Athena.CronJobs.Site
             services.AddLogAggregate();
 
             AddHangFireService(services);
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +58,7 @@ namespace Fanex.Athena.CronJobs.Site
             app.UseForwardedHeaders();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            AddRecurringJobs();
             app.UseHangFire("/jobs");
             app.UseSiteHealthChecks(Configuration);
 
@@ -74,6 +75,7 @@ namespace Fanex.Athena.CronJobs.Site
         private void AddHangFireService(IServiceCollection services)
         {
             services.Configure<NotificationSetting>(Configuration.GetSection("NotificationSetting"));
+            services.Configure<BellNotificationSetting>(Configuration.GetSection("BellNotificationSetting"));
             services.Configure<AppSetting>(Configuration.GetSection("App"));
 
             var redisConfig = Configuration.GetSection("Redis").Get<RedisSetting>();
@@ -85,7 +87,7 @@ namespace Fanex.Athena.CronJobs.Site
                 DefaultDatabase = redisConfig.Database,
             });
 
-            services.AddCronJobs();
+            services.AddCronJobsDI();
 
             services.AddHangfire((serviceProvider, configuration) =>
             {
@@ -93,7 +95,7 @@ namespace Fanex.Athena.CronJobs.Site
                 {
                     Prefix = redisConfig.AppName,
                     Db = redisConfig.Database
-                });
+                }).WithJobExpirationTimeout(TimeSpan.FromHours(2));
                 configuration.UseFilter(serviceProvider.GetService<GlobalHangfireJobExceptionFilterAttribute>());
                 configuration.UseFilter(serviceProvider.GetService<UMHangfireFilterAttribute>());
             });
@@ -117,6 +119,23 @@ namespace Fanex.Athena.CronJobs.Site
                 .WithSqlServer(resourcePath: "~/SpConfig/FanexSpName.xml")
                 .Use(connectionStrings)
                 .Run();
+        }
+
+        private void AddRecurringJobs()
+        {
+            if (Configuration != null && bool.Parse(Configuration.GetSection("App:IsMainService").Value))
+            {
+                RegisterRecuringTask<InsertAbnormalBetNotificationJob>(nameof(InsertAbnormalBetNotificationJob),
+                    "* */15 * * * *");
+            }
+            RegisterRecuringTask<NotificateChangeSettingJob>(nameof(NotificateChangeSettingJob), "1/5 * * * * *");
+            RegisterRecuringTask<NotificateReachThresholdJob>(nameof(NotificateReachThresholdJob), "1/30 * * * * *");
+        }
+
+        private void RegisterRecuringTask<T>(string taskName, string cronExpress)
+            where T : JobBase
+        {
+            RecurringJob.AddOrUpdate<T>(taskName, (job) => job.ExecuteAsync(), cronExpress);
         }
     }
 }
