@@ -34,6 +34,11 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Services
             await BellNotificationRepository.InsertNotificationAsync(param);
         }
 
+        public async Task InsertMPABellNotificationAsync(InsertBellNotificationParam param)
+        {
+            await BellNotificationRepository.InsertMPANotificationAsync(param);
+        }
+
         public async Task<int> GetDWHDailyJobStatusAsync(int jobId)
         {
             return await BellNotificationRepository.GetDWHDailyJobStatusAsync(jobId);

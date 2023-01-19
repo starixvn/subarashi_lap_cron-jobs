@@ -6,6 +6,7 @@ using Fanex.Athena.CronJobs.Infrastructure.Settings;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Fanex.Athena.CronJobs.App.Jobs
@@ -67,6 +68,22 @@ namespace Fanex.Athena.CronJobs.App.Jobs
                         ContentCs = GetAbnormalBetContent(data.CreatedDate, "cs"),
                         EventDate = data.CreatedDate
                     });
+
+                    var MPALicenseeList = GetMPALicenseeList(data.LicenseeName);
+
+                    if (!string.IsNullOrEmpty(MPALicenseeList))
+                    {
+                        await BellNotificationService.InsertMPABellNotificationAsync(new InsertBellNotificationParam
+                        {
+                            MessageType = (int)MPABellNotificationType.AbnormalBet,
+                            LicenseeNames = MPALicenseeList,
+                            SubjectEn = GetAbnormalBetSubject(data.CreatedDate, "en"),
+                            SubjectCs = GetAbnormalBetSubject(data.CreatedDate, "cs"),
+                            ContentEn = GetAbnormalBetContent(data.CreatedDate, "en"),
+                            ContentCs = GetAbnormalBetContent(data.CreatedDate, "cs"),
+                            EventDate = data.CreatedDate
+                        });
+                    }
                 }
 
                 await BellNotificationService.UpdateAbnormalBetNotificationJobDate();
@@ -81,6 +98,21 @@ namespace Fanex.Athena.CronJobs.App.Jobs
         private string GetAbnormalBetSubject(DateTime eventDate, string langCode)
         {
             return _subjectFormat.ContainsKey(langCode) ? string.Format(_subjectFormat[langCode], eventDate.ToString("dd MMM yyyy")) : null;
+        }
+
+        private string GetMPALicenseeList(string licenseeList)
+        {
+            var MPALicensees = new List<string>();
+
+            foreach (var licensee in licenseeList.Split(','))
+            {
+                if (AppSetting.MPALicenseeList.Contains(licensee))
+                {
+                    MPALicensees.Add(licensee);
+                }
+            }
+
+            return string.Join(",", MPALicensees);
         }
     }
 }
