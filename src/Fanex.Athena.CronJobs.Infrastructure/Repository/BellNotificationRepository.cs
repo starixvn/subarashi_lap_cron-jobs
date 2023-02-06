@@ -30,6 +30,20 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Repository
             });
         }
 
+        public Task InsertMPANotificationAsync(InsertBellNotificationParam param)
+        {
+            return DynamicRepository.ExecuteAsync(new MPABellNotificationCommand
+            {
+                MessageType = param.MessageType,
+                LicenseeNames = param.LicenseeNames,
+                SubjectEn = param.SubjectEn,
+                SubjectCs = param.SubjectCs,
+                ContentEn = param.ContentEn,
+                ContentCs = param.ContentCs,
+                EventDate = param.EventDate
+            });
+        }
+
         public Task<int> GetDWHDailyJobStatusAsync(int jobId)
         {
             return DynamicRepository.GetAsync<int>(new DWHDailyJobStatusCriteria

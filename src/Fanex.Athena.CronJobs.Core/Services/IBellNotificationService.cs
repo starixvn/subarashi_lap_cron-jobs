@@ -9,6 +9,8 @@ namespace Fanex.Athena.CronJobs.Core.Services
     {
         public Task InsertBellNotificationAsync(InsertBellNotificationParam param);
 
+        public Task InsertMPABellNotificationAsync(InsertBellNotificationParam param);
+
         public Task<int> GetDWHDailyJobStatusAsync(int jobId);
 
         public Task<bool> IsAbnormalBetNotificationJobDone();

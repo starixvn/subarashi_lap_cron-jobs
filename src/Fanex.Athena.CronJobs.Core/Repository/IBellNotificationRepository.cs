@@ -9,6 +9,8 @@ namespace Fanex.Athena.CronJobs.Core.Repository
     {
         Task InsertNotificationAsync(InsertBellNotificationParam param);
 
+        Task InsertMPANotificationAsync(InsertBellNotificationParam param);
+
         Task<int> GetDWHDailyJobStatusAsync(int jobId);
 
         Task<IEnumerable<AbnormalBet>> GetDailyAbnormalBetAsync();
