@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Functions SiteId="35" SiteName="CronJobs">
   <Function Name="MonitorAccumulate">
-    <Setting Key="Acc_WLMonitored_Service_GlobalSettingSel" SpName="Acc_WLMonitored_Service_GlobalSettingSel" DbName="DBEXT.bodb02.bodbLicenseeNet" />
-    <Setting Key="Acc_Dep_WLMonitored_Service_AccumulatedDataSel" SpName="Acc_Dep_WLMonitored_Service_AccumulatedDataSel" DbName="DBEXT.bodb02.bodbLicenseeNet" />
-    <Setting Key="Acc_Dep_WLMonitored_Service_LatestAccumulatedDataSel" SpName="Acc_Dep_WLMonitored_Service_LatestAccumulatedDataSel" DbName="DBEXT.bodb02.bodbLicenseeNet" />
-    <Setting Key="Acc_Dep_WLMonitored_Service_ReachHistoryIns" SpName="Acc_Dep_WLMonitored_Service_ReachHistoryIns" DbName="DBEXT.bodb02.bodbLicenseeNet" />
-    <Setting Key="Acc_WLMonitored_Service_GetSettingByCust" SpName="Acc_WLMonitored_Service_GetSettingByCust" DbName="DBCUST.CustDB.bodbLicenseeNet" />
-    <Setting Key="Acc_WLMonitored_Service_GetChangedSettingList" SpName="Acc_WLMonitored_Service_GetChangedSettingList" DbName="DBCUST.CustDB.bodbLicenseeNet" />
-    <Setting Key="Lrf_MessageIns" SpName="Lrf_MessageIns" DbName="DBCUST.SiteConfig.bodbLicenseeNet" />
-    <Setting Key="N88_MessageIns" SpName="N88_MessageIns" DbName="DBN88POL.N88_UserControl.bodbLicenseeNet" />
-    <Setting Key="DailyJob_CheckTasksStatus" SpName="DailyJob_CheckTasksStatus" DbName="DBWH.bodb_DWRS.bodbLicenseeNet" />
-    <Setting Key="Lrf_AbnormalBet_GetLicByDate" SpName="Lrf_AbnormalBet_GetLicByDate" DbName="DBWH.bodb_DWRS.bodbLicenseeNet" />
-    <Setting Key="Lrf_SystemSettingsByNameSel" SpName="Lrf_SystemSettingsByNameSel" DbName="DBCUST.SiteConfig.bodbLicenseeNet" />
-    <Setting Key="Lrf_SystemSettingsUpd" SpName="Lrf_SystemSettingsUpd" DbName="DBCUST.SiteConfig.bodbLicenseeNet" />
+    <Setting Key="Acc_WLMonitored_Service_GlobalSettingSel" SpName="Acc_WLMonitored_Service_GlobalSettingSel" DbName="DBEXT.bodb02.wsv_lap" />
+    <Setting Key="Acc_Dep_WLMonitored_Service_AccumulatedDataSel" SpName="Acc_Dep_WLMonitored_Service_AccumulatedDataSel" DbName="DBEXT.bodb02.wsv_lap" />
+    <Setting Key="Acc_Dep_WLMonitored_Service_LatestAccumulatedDataSel" SpName="Acc_Dep_WLMonitored_Service_LatestAccumulatedDataSel" DbName="DBEXT.bodb02.wsv_lap" />
+    <Setting Key="Acc_Dep_WLMonitored_Service_ReachHistoryIns" SpName="Acc_Dep_WLMonitored_Service_ReachHistoryIns" DbName="DBEXT.bodb02.wsv_lap" />
+    <Setting Key="Acc_WLMonitored_Service_GetSettingByCust" SpName="Acc_WLMonitored_Service_GetSettingByCust" DbName="DBCUST.CustDB.wsv_lap" />
+    <Setting Key="Acc_WLMonitored_Service_GetChangedSettingList" SpName="Acc_WLMonitored_Service_GetChangedSettingList" DbName="DBCUST.CustDB.wsv_lap" />
+    <Setting Key="Lrf_MessageIns" SpName="Lrf_MessageIns" DbName="DBCUST.SiteConfig.wsv_lap" />
+    <Setting Key="N88_MessageIns" SpName="N88_MessageIns" DbName="DBN88POL.N88_UserControl.wsv_lap" />
+    <Setting Key="DailyJob_CheckTasksStatus" SpName="DailyJob_CheckTasksStatus" DbName="DBWH.bodb_DWRS.wsv_lap" />
+    <Setting Key="Lrf_AbnormalBet_GetLicByDate" SpName="Lrf_AbnormalBet_GetLicByDate" DbName="DBWH.bodb_DWRS.wsv_lap" />
+    <Setting Key="Lrf_SystemSettingsByNameSel" SpName="Lrf_SystemSettingsByNameSel" DbName="DBCUST.SiteConfig.wsv_lap" />
+    <Setting Key="Lrf_SystemSettingsUpd" SpName="Lrf_SystemSettingsUpd" DbName="DBCUST.SiteConfig.wsv_lap" />
   </Function>
 </Functions>
