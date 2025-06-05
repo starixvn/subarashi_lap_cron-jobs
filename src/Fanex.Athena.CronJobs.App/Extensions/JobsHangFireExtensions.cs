@@ -38,6 +38,7 @@ namespace Fanex.Athena.CronJobs.App.Extensions
             services.AddScoped<IGlobalSettingRepository, GlobalSettingRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<IBellNotificationRepository, BellNotificationRepository>();
+            services.AddScoped<IMatchMonitoringCenterRepository, MatchMonitoringCenterRepository>();
             return services;
         }
 
@@ -46,6 +47,7 @@ namespace Fanex.Athena.CronJobs.App.Extensions
             services.AddScoped<IGlobalSettingService, GlobalSettingService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IBellNotificationService, BellNotificationService>();
+            services.AddScoped<IMatchMonitoringCenterService, MatchMonitoringCenterService>();
             return services;
         }
 

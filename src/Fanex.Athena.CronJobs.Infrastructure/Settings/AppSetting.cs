@@ -9,5 +9,7 @@ namespace Fanex.Athena.CronJobs.Infrastructure.Settings
         public bool IsMainService { get; set; }
 
         public IEnumerable<string> MPALicenseeList { get; set; }
+
+        public string Environment { get; set; }
     }
 }

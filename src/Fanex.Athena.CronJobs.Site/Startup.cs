@@ -127,6 +127,8 @@ namespace Fanex.Athena.CronJobs.Site
             {
                 RegisterRecuringTask<InsertAbnormalBetNotificationJob>(nameof(InsertAbnormalBetNotificationJob),
                     "* */15 * * * *");
+                RegisterRecuringTask<MatchMonitoringCenterDetectJob>(nameof(MatchMonitoringCenterDetectJob),
+                    "1/5 * * * * *");
             }
             RegisterRecuringTask<NotificateChangeSettingJob>(nameof(NotificateChangeSettingJob), "1/5 * * * * *");
             RegisterRecuringTask<NotificateReachThresholdJob>(nameof(NotificateReachThresholdJob), "1/30 * * * * *");
