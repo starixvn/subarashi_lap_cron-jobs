@@ -1,225 +1,220 @@
-﻿using Fanex.Athena.CronJobs.Core.Params;
-using Fanex.Athena.CronJobs.Infrastructure.Criteria.Command;
-using Fanex.Athena.CronJobs.Infrastructure.Repository;
-using Fanex.Data.Repository;
+﻿namespace Fanex.Athena.CronJobs.Infrastructure.UnitTests.Repository;
+
+using Criteria.Command;
+using Criteria.Query;
+using Data.Repository;
+using Domain.DTO;
+using Domain.Params;
+using Infrastructure.Repository;
 using NSubstitute;
 using NUnit.Framework;
-using System.Threading.Tasks;
 
-namespace Fanex.Athena.CronJobs.Infrastructure.UnitTests.Repository
+public class BellNotificationRepositoryTests
 {
-    using Core.DTO;
-    using Fanex.Athena.CronJobs.Infrastructure.Criteria.Query;
-    using System;
-    using Core.Repository;
+    private IDynamicRepository _dynamicRepository;
+    private BellNotificationRepository repo;
 
-    public class BellNotificationRepositoryTests
+    [SetUp]
+    public void SetUp()
     {
-        private IDynamicRepository _dynamicRepository;
-        private IBellNotificationRepository _repo;
+        _dynamicRepository = Substitute.For<IDynamicRepository>();
+        repo = new BellNotificationRepository(_dynamicRepository);
+    }
 
-        [SetUp]
-        public void SetUp()
+    [TearDown]
+    public void TearDown()
+    {
+        _dynamicRepository = null;
+    }
+
+    [Test]
+    public async Task InsertNotificationAsync_WhenCallWithEmptyParameter_ReceiveParamIsNotValid()
+    {
+        //Arrange
+        var param = new InsertBellNotificationParam();
+
+        //Action
+        await repo.InsertNotificationAsync(param);
+
+        //Assert
+        await _dynamicRepository.Received()
+            .ExecuteAsync(Arg.Is<BellNotificationCommand>(_ => !_.IsValid()));
+    }
+
+    [Test]
+    public async Task InsertNotificationAsync_WhenCallWithNormalParam_ReceiveCorrectParam()
+    {
+        //Arrange
+        var param = new InsertBellNotificationParam
         {
-            _dynamicRepository = Substitute.For<IDynamicRepository>();
-            _repo = new BellNotificationRepository(_dynamicRepository);
-        }
+            MessageType = 1,
+            LicenseeNames = "Test",
+            SubjectEn = "SubjectEn",
+            SubjectCs = "SubjectCs",
+            ContentEn = "ContentEn",
+            ContentCs = "ContentCs",
+            EventDate = DateTime.Now
+        };
 
-        [TearDown]
-        public void TearDown()
+        //Action
+        await repo.InsertNotificationAsync(param);
+
+        //Assert
+        await _dynamicRepository.Received().ExecuteAsync(Arg.Is<BellNotificationCommand>(command => IsCorrectNotificationParam(command, param)));
+    }
+
+    [Test]
+    public async Task InsertMPANotificationAsync_WhenCallWithEmptyParameter_ReceiveParamIsNotValid()
+    {
+        //Arrange
+        var param = new InsertBellNotificationParam();
+
+        //Action
+        await repo.InsertMPANotificationAsync(param);
+
+        //Assert
+        await _dynamicRepository.Received()
+            .ExecuteAsync(Arg.Is<MPABellNotificationCommand>(_ => !_.IsValid()));
+    }
+
+    [Test]
+    public async Task InsertMPANotificationAsync_WhenCallWithNormalParam_ReceiveCorrectParam()
+    {
+        //Arrange
+        var param = new InsertBellNotificationParam
         {
-            _dynamicRepository = null;
-        }
+            MessageType = 2,
+            LicenseeNames = "TestMPA",
+            SubjectEn = "SubjectEn",
+            SubjectCs = "SubjectCs",
+            ContentEn = "ContentEn",
+            ContentCs = "ContentCs",
+            EventDate = DateTime.Now
+        };
 
-        [Test]
-        public async Task InsertNotificationAsync_WhenCallWithEmptyParameter_ReceiveParamIsNotValid()
+        //Action
+        await repo.InsertMPANotificationAsync(param);
+
+        //Assert
+        await _dynamicRepository.Received().ExecuteAsync(Arg.Is<MPABellNotificationCommand>(command => IsCorrectMPANotificationParam(command, param)));
+    }
+
+    [Test]
+    public async Task GetDWHDailyJobStatusAsync_WhenCallWithNormalParam_ReceiveCorrectParam()
+    {
+        //Arrange
+        var jobId = -1;
+
+        //Action
+        await repo.GetDWHDailyJobStatusAsync(jobId);
+
+        //Assert
+        await _dynamicRepository.Received()
+            .GetAsync<int>(Arg.Is<DWHDailyJobStatusCriteria>(_ => string.CompareOrdinal(_.TaskIDList, jobId.ToString()) == 0));
+    }
+
+    [Test]
+    public async Task GetSystemSettingAsync_WhenCallWithEmptyParam_ReceiveInvalidParam()
+    {
+        //Arrange
+        var name = string.Empty;
+
+        //Action
+        await repo.GetSystemSettingAsync(name);
+
+        //Assert
+        await _dynamicRepository.Received()
+            .GetAsync<SystemSetting>(Arg.Is<GetSystemSettingCriteria>(_ => !_.IsValid()));
+    }
+
+    [Test]
+    public async Task GetSystemSettingAsync_WhenCallWithNormalParam_ReceiveCorrectParam()
+    {
+        //Arrange
+        var name = "Test";
+
+        //Action
+        await repo.GetSystemSettingAsync(name);
+
+        //Assert
+        await _dynamicRepository.Received()
+            .GetAsync<SystemSetting>(Arg.Is<GetSystemSettingCriteria>(_ => string.CompareOrdinal(_.Name, name) == 0));
+    }
+
+    [Test]
+    public async Task GetDailyAbnormalBetAsync_WhenCallWithNormalParam_ReceiveCorrectParam()
+    {
+        //Arrange
+
+        //Action
+        await repo.GetDailyAbnormalBetAsync();
+
+        //Assert
+        await _dynamicRepository.Received()
+            .FetchAsync<AbnormalBet>(Arg.Is<GetAbnormalBetCriteria>(_ => _.IsValid()));
+    }
+
+    [Test]
+    public async Task UpdateSystemSettingAsync_WhenCallWithEmptyParam_ReceiveInvalidParam()
+    {
+        //Arrange
+        var param = new SystemSetting
         {
-            //Arrange
-            var param = new InsertBellNotificationParam();
+            Name = string.Empty
+        };
 
-            //Action
-            await _repo.InsertNotificationAsync(param);
+        //Action
+        await repo.UpdateSystemSettingAsync(param);
 
-            //Assert
-            await _dynamicRepository.Received()
-                .ExecuteAsync(Arg.Is<BellNotificationCommand>(_ => !_.IsValid()));
-        }
+        //Assert
+        await _dynamicRepository.Received()
+            .ExecuteAsync(Arg.Is<SystemSettingCommand>(_ => !_.IsValid()));
+    }
 
-        [Test]
-        public async Task InsertNotificationAsync_WhenCallWithNormalParam_ReceiveCorrectParam()
+    [Test]
+    public async Task UpdateSystemSettingAsync_WhenCallWithNormalParam_ReceiveCorrectParam()
+    {
+        //Arrange
+
+        var param = new SystemSetting
         {
-            //Arrange
-            var param = new InsertBellNotificationParam
-            {
-                MessageType = 1,
-                LicenseeNames = "Test",
-                SubjectEn = "SubjectEn",
-                SubjectCs = "SubjectCs",
-                ContentEn = "ContentEn",
-                ContentCs = "ContentCs",
-                EventDate = DateTime.Now
-            };
+            Name = "Test Name",
+            Value = "Test Value"
+        };
 
-            //Action
-            await _repo.InsertNotificationAsync(param);
+        //Action
+        await repo.UpdateSystemSettingAsync(param);
 
-            //Assert
-            await _dynamicRepository.Received().ExecuteAsync(Arg.Is<BellNotificationCommand>(command => IsCorrectNotificationParam(command, param)));
-        }
+        //Assert
+        await _dynamicRepository.Received()
+            .ExecuteAsync(Arg.Is<SystemSettingCommand>(_ => IsCorrectSystemSettingParam(_, param)));
+    }
 
-        [Test]
-        public async Task InsertMPANotificationAsync_WhenCallWithEmptyParameter_ReceiveParamIsNotValid()
-        {
-            //Arrange
-            var param = new InsertBellNotificationParam();
+    private static bool IsCorrectNotificationParam(BellNotificationCommand command, InsertBellNotificationParam param)
+    {
+        return command.MessageType.Equals(param.MessageType)
+               && command.LicenseeNames.Equals(param.LicenseeNames)
+               && command.SubjectEn.Equals(param.SubjectEn)
+               && command.SubjectCs.Equals(param.SubjectCs)
+               && command.ContentEn.Equals(param.ContentEn)
+               && command.ContentCs.Equals(param.ContentCs)
+               && command.EventDate.Equals(param.EventDate);
+    }
 
-            //Action
-            await _repo.InsertMPANotificationAsync(param);
+    private static bool IsCorrectMPANotificationParam(MPABellNotificationCommand command, InsertBellNotificationParam param)
+    {
+        return command.MessageType.Equals(param.MessageType)
+               && command.LicenseeNames.Equals(param.LicenseeNames)
+               && command.SubjectEn.Equals(param.SubjectEn)
+               && command.SubjectCs.Equals(param.SubjectCs)
+               && command.ContentEn.Equals(param.ContentEn)
+               && command.ContentCs.Equals(param.ContentCs)
+               && command.EventDate.Equals(param.EventDate);
+    }
 
-            //Assert
-            await _dynamicRepository.Received()
-                .ExecuteAsync(Arg.Is<MPABellNotificationCommand>(_ => !_.IsValid()));
-        }
-
-        [Test]
-        public async Task InsertMPANotificationAsync_WhenCallWithNormalParam_ReceiveCorrectParam()
-        {
-            //Arrange
-            var param = new InsertBellNotificationParam
-            {
-                MessageType = 2,
-                LicenseeNames = "TestMPA",
-                SubjectEn = "SubjectEn",
-                SubjectCs = "SubjectCs",
-                ContentEn = "ContentEn",
-                ContentCs = "ContentCs",
-                EventDate = DateTime.Now
-            };
-
-            //Action
-            await _repo.InsertMPANotificationAsync(param);
-
-            //Assert
-            await _dynamicRepository.Received().ExecuteAsync(Arg.Is<MPABellNotificationCommand>(command => IsCorrectMPANotificationParam(command, param)));
-        }
-
-        [Test]
-        public async Task GetDWHDailyJobStatusAsync_WhenCallWithNormalParam_ReceiveCorrectParam()
-        {
-            //Arrange
-            var jobId = -1;
-
-            //Action
-            await _repo.GetDWHDailyJobStatusAsync(jobId);
-
-            //Assert
-            await _dynamicRepository.Received()
-                .GetAsync<int>(Arg.Is<DWHDailyJobStatusCriteria>(_ => string.CompareOrdinal(_.TaskIDList, jobId.ToString()) == 0));
-        }
-
-        [Test]
-        public async Task GetSystemSettingAsync_WhenCallWithEmptyParam_ReceiveInvalidParam()
-        {
-            //Arrange
-            var name = string.Empty;
-
-            //Action
-            await _repo.GetSystemSettingAsync(name);
-
-            //Assert
-            await _dynamicRepository.Received()
-                .GetAsync<SystemSetting>(Arg.Is<GetSystemSettingCriteria>(_ => !_.IsValid()));
-        }
-
-        [Test]
-        public async Task GetSystemSettingAsync_WhenCallWithNormalParam_ReceiveCorrectParam()
-        {
-            //Arrange
-            var name = "Test";
-
-            //Action
-            await _repo.GetSystemSettingAsync(name);
-
-            //Assert
-            await _dynamicRepository.Received()
-                .GetAsync<SystemSetting>(Arg.Is<GetSystemSettingCriteria>(_ => string.CompareOrdinal(_.Name, name) == 0));
-        }
-
-        [Test]
-        public async Task GetDailyAbnormalBetAsync_WhenCallWithNormalParam_ReceiveCorrectParam()
-        {
-            //Arrange
-
-            //Action
-            await _repo.GetDailyAbnormalBetAsync();
-
-            //Assert
-            await _dynamicRepository.Received()
-                .FetchAsync<AbnormalBet>(Arg.Is<GetAbnormalBetCriteria>(_ => _.IsValid()));
-        }
-
-        [Test]
-        public async Task UpdateSystemSettingAsync_WhenCallWithEmptyParam_ReceiveInvalidParam()
-        {
-            //Arrange
-            var param = new SystemSetting
-            {
-                Name = string.Empty
-            };
-
-            //Action
-            await _repo.UpdateSystemSettingAsync(param);
-
-            //Assert
-            await _dynamicRepository.Received()
-                .ExecuteAsync(Arg.Is<SystemSettingCommand>(_ => !_.IsValid()));
-        }
-
-        [Test]
-        public async Task UpdateSystemSettingAsync_WhenCallWithNormalParam_ReceiveCorrectParam()
-        {
-            //Arrange
-            
-            var param = new SystemSetting
-            {
-                Name = "Test Name",
-                Value = "Test Value"
-            };
-
-            //Action
-            await _repo.UpdateSystemSettingAsync(param);
-
-            //Assert
-            await _dynamicRepository.Received()
-                .ExecuteAsync(Arg.Is<SystemSettingCommand>(_ => IsCorrectSystemSettingParam(_, param)));
-        }
-
-        private static bool IsCorrectNotificationParam(BellNotificationCommand command, InsertBellNotificationParam param)
-        {
-            return (command.MessageType.Equals(param.MessageType))
-                   && (command.LicenseeNames.Equals(param.LicenseeNames))
-                   && (command.SubjectEn.Equals(param.SubjectEn))
-                   && (command.SubjectCs.Equals(param.SubjectCs))
-                   && (command.ContentEn.Equals(param.ContentEn))
-                   && (command.ContentCs.Equals(param.ContentCs))
-                   && (command.EventDate.Equals(param.EventDate));
-        }
-
-        private static bool IsCorrectMPANotificationParam(MPABellNotificationCommand command, InsertBellNotificationParam param)
-        {
-            return (command.MessageType.Equals(param.MessageType))
-                   && (command.LicenseeNames.Equals(param.LicenseeNames))
-                   && (command.SubjectEn.Equals(param.SubjectEn))
-                   && (command.SubjectCs.Equals(param.SubjectCs))
-                   && (command.ContentEn.Equals(param.ContentEn))
-                   && (command.ContentCs.Equals(param.ContentCs))
-                   && (command.EventDate.Equals(param.EventDate));
-        }
-
-        private static bool IsCorrectSystemSettingParam(SystemSettingCommand command, SystemSetting param)
-        {
-            return (command.Name.Equals(param.Name))
-                   && (command.Value.Equals(param.Value));
-        }
+    private static bool IsCorrectSystemSettingParam(SystemSettingCommand command, SystemSetting param)
+    {
+        return command.Name.Equals(param.Name)
+               && command.Value.Equals(param.Value);
     }
 }

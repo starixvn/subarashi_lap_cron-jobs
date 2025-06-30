@@ -1,22 +1,18 @@
-﻿using Fanex.Athena.CronJobs.Core.DTO;
-using Fanex.Athena.CronJobs.Core.Repository;
-using Fanex.Athena.CronJobs.Infrastructure.Criteria.Query;
-using Fanex.Data.Repository;
+﻿namespace Fanex.Athena.CronJobs.Infrastructure.Repository;
+
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.Settings;
+using Criteria.Query;
+using Data.Repository;
+using Domain.DTO;
+using Domain.Repository;
+using Microsoft.Extensions.Options;
 
-namespace Fanex.Athena.CronJobs.Infrastructure.Repository
+public class GlobalSettingRepository(IDynamicRepository dynamicRepository, IOptions<AppSetting> appOptions) : IGlobalSettingRepository
 {
-    public class GlobalSettingRepository : IGlobalSettingRepository
-    {
-        public IDynamicRepository Repository { get; }
+    private AppSetting AppSetting { get; } = appOptions?.Value;
 
-        public GlobalSettingRepository(IDynamicRepository repository)
-        {
-            Repository = repository;
-        }
-
-        public Task<IEnumerable<ServiceSetting>> GetSetting(string serviceName)
-            => Repository.FetchAsync<ServiceSetting>(new GlobalSettingCriteria { ServiceName = serviceName });
-    }
+    public Task<IEnumerable<ServiceSetting>> GetSetting(string serviceName)
+        => dynamicRepository.FetchAsync<ServiceSetting>(new GlobalSettingCriteria(!AppSetting.IsMainService) { ServiceName = serviceName });
 }

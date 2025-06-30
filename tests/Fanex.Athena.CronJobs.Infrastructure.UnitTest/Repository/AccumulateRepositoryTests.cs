@@ -1,53 +1,58 @@
-﻿using Fanex.Athena.CronJobs.Core.DTO;
-using Fanex.Athena.CronJobs.Infrastructure.Criteria.Query;
-using Fanex.Athena.CronJobs.Infrastructure.Repository;
-using Fanex.Data.Repository;
+﻿namespace Fanex.Athena.CronJobs.Infrastructure.UnitTests.Repository;
+
+using Application.Settings;
+using Criteria.Query;
+using Data.Repository;
+using Domain.DTO;
+using Infrastructure.Repository;
+using Microsoft.Extensions.Options;
 using NSubstitute;
 using NUnit.Framework;
-using System;
-using System.Threading.Tasks;
 
-namespace Fanex.Athena.CronJobs.Infrastructure.UnitTests.Repository
+public class AccumulateRepositoryTests
 {
-    public class AccumulateRepositoryTests
+    private IOptions<AppSetting> _appSetting;
+
+    private IDynamicRepository _dynamicRepository;
+
+    private AccumulateRepository repo;
+
+    [SetUp]
+    public void SetUp()
     {
-        private AccumulateRepository AccumulateRepository { get; set; }
+        _dynamicRepository = Substitute.For<IDynamicRepository>();
+        _appSetting = Substitute.For<IOptions<AppSetting>>();
+        _appSetting.Value.Returns(new AppSetting());
+        repo = new AccumulateRepository(_dynamicRepository, _appSetting);
+    }
 
-        private IDynamicRepository DynamicRepository { get; set; }
+    [Test]
+    public async Task GetUserAccumulateWinlossAsync_WhenCall_ReceiveCorrectParam()
+    {
+        //Arrange
+        var custId = "1";
+        var date = DateTime.Now;
 
-        [SetUp]
-        public void SetUp()
-        {
-            DynamicRepository = Substitute.For<IDynamicRepository>();
-            AccumulateRepository = new AccumulateRepository(DynamicRepository);
-        }
+        //Action
+        await repo.GetUserAccumulateWinlossAsync(custId, date);
 
-        [Test]
-        public async Task GetUserAccumulateWinlossAsync_WhenCall_ReceiveCorrectParam()
-        {
-            //Arrange
-            var custId = "1";
-            var date = DateTime.Now;
+        //Assert
+        await _dynamicRepository.Received()
+            .FetchAsync<AccumulateWinloss>(Arg.Is<GetUserAccumulateWinlossCriteria>(_ => _.CustIds == custId && _.CurrentDate == date));
+    }
 
-            //Action
-            await AccumulateRepository.GetUserAccumulateWinlossAsync(custId, date);
+    [Test]
+    public async Task GetLastestAccumulateWinlossAsync_WhenCall_ReceiveCorrectParam()
+    {
+        //Arrange
+        var date = DateTime.Now;
+        var batchCount = 2000;
 
-            //Assert
-            await DynamicRepository.Received().FetchAsync<AccumulateWinloss>(Arg.Is<GetUserAccumulateWinlossCriteria>(_ => _.CustIds == custId && _.CurrentDate == date));
-        }
+        //Action
+        await repo.GetLastestAccumulateWinlossAsync(date, batchCount);
 
-        [Test]
-        public async Task GetLastestAccumulateWinlossAsync_WhenCall_ReceiveCorrectParam()
-        {
-            //Arrange
-            var date = DateTime.Now;
-            var batchCount = 2000;
-
-            //Action
-            await AccumulateRepository.GetLastestAccumulateWinlossAsync(date, batchCount);
-
-            //Assert
-            await DynamicRepository.Received().FetchAsync<AccumulateWinloss>(Arg.Is<GetLastestAccumulateCriteria>(_ => _.LastCheckTIme == date && _.BatchNo == batchCount));
-        }
+        //Assert
+        await _dynamicRepository.Received()
+            .FetchAsync<AccumulateWinloss>(Arg.Is<GetLastestAccumulateCriteria>(_ => _.LastCheckTIme == date && _.BatchNo == batchCount));
     }
 }

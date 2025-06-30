@@ -1,63 +1,55 @@
-﻿using Fanex.Athena.CronJobs.Core.Repository;
-using Fanex.Athena.CronJobs.Infrastructure.Criteria.Command;
-using Fanex.Athena.CronJobs.Infrastructure.Criteria.Query;
-using Fanex.Athena.CronJobs.Infrastructure.Settings;
-using Fanex.Data.Repository;
-using Microsoft.Extensions.Options;
+﻿namespace Fanex.Athena.CronJobs.Infrastructure.Repository;
+
 using System.Threading.Tasks;
+using Application.Settings;
+using Criteria.Command;
+using Criteria.Query;
+using Data.Repository;
+using Domain.Repository;
+using Microsoft.Extensions.Options;
 
-namespace Fanex.Athena.CronJobs.Infrastructure.Repository
+public class MatchMonitoringCenterRepository(IDynamicRepository dynamicRepository, IOptions<AppSetting> options) : IMatchMonitoringCenterRepository
 {
-    public class MatchMonitoringCenterRepository : IMatchMonitoringCenterRepository
+    private AppSetting AppSetting { get; } = options?.Value;
+
+    public Task<string> DetectAlertRulesAsync()
     {
-        private IDynamicRepository DynamicRepository { get; }
-        private AppSetting AppSetting { get; }
+        return dynamicRepository.GetAsync<string>(new DetectAlertRulesCriteria());
+    }
 
-        public MatchMonitoringCenterRepository(IDynamicRepository dynamicRepository, IOptions<AppSetting> options)
+    public Task UpdateMatchAlertAsync(string matchMonitoringData)
+    {
+        var command = new UpdateMatchAlertCommand
         {
-            DynamicRepository = dynamicRepository;
-            AppSetting = options?.Value;
-        }
+            MatchMonitoringData = matchMonitoringData
+        };
 
-        public Task<string> DetectAlertRulesAsync()
-        {
-            return DynamicRepository.GetAsync<string>(new DetectAlertRulesCriteria());
-        }
+        return dynamicRepository.ExecuteAsync(command);
+    }
 
-        public Task UpdateMatchAlertAsync(string matchMonitoringData)
+    public async Task UpdateAlertHistoryAsync(string matchMonitoringData)
+    {
+        var command = new UpdateAlertHistoryCommand
         {
-            var command = new UpdateMatchAlertCommand
+            MatchMonitoringData = matchMonitoringData
+        };
+
+        await dynamicRepository.ExecuteAsync(command);
+
+        if (IsProductionOrUat())
+        {
+            var commandStandby = new UpdateAlertHistoryCommand(isStandby: true)
             {
                 MatchMonitoringData = matchMonitoringData
             };
 
-            return DynamicRepository.ExecuteAsync(command);
+            await dynamicRepository.ExecuteAsync(commandStandby);
         }
+    }
 
-        public async Task UpdateAlertHistoryAsync(string matchMonitoringData)
-        {
-            var command53 = new UpdateAlertHistoryCommand("Task_MatchMonitoring_UpdateAlertHistory53")
-            {
-                MatchMonitoringData = matchMonitoringData
-            };
-
-            await DynamicRepository.ExecuteAsync(command53);
-
-            if (IsProductionOrUat())
-            {
-                var command52 = new UpdateAlertHistoryCommand("Task_MatchMonitoring_UpdateAlertHistory52")
-                {
-                    MatchMonitoringData = matchMonitoringData
-                };
-
-                await DynamicRepository.ExecuteAsync(command52);
-            }
-        }
-
-        private bool IsProductionOrUat()
-        {
-            var env = AppSetting?.Environment?.ToUpperInvariant() ?? string.Empty;
-            return env.StartsWith("UAT") || env.StartsWith("PRO");
-        }
+    private bool IsProductionOrUat()
+    {
+        var env = AppSetting.Environment.ToUpperInvariant();
+        return env.StartsWith("UAT") || env.StartsWith("PRO");
     }
 }

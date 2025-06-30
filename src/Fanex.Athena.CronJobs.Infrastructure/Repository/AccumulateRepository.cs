@@ -1,29 +1,31 @@
-﻿using Fanex.Athena.CronJobs.Core.DTO;
-using Fanex.Athena.CronJobs.Core.Repository;
-using Fanex.Athena.CronJobs.Infrastructure.Criteria.Query;
-using Fanex.Data.Repository;
+﻿namespace Fanex.Athena.CronJobs.Infrastructure.Repository;
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.Settings;
+using Criteria.Query;
+using Data.Repository;
+using Domain.DTO;
+using Domain.Repository;
+using Microsoft.Extensions.Options;
 
-namespace Fanex.Athena.CronJobs.Infrastructure.Repository
+public class AccumulateRepository(IDynamicRepository dynamicRepository, IOptions<AppSetting> appOptions) : IAccumulateRepository
 {
-    public class AccumulateRepository : IAccumulateRepository
-    {
-        private IDynamicRepository DynamicRepository { get; }
+    private AppSetting AppSetting { get; } = appOptions?.Value;
 
-        public AccumulateRepository(IDynamicRepository dynamicRepository)
-            => DynamicRepository = dynamicRepository;
+    public Task<IEnumerable<AccumulateWinloss>> GetUserAccumulateWinlossAsync(string custId, DateTime date)
+        => dynamicRepository.FetchAsync<AccumulateWinloss>(new GetUserAccumulateWinlossCriteria(!AppSetting.IsMainService)
+        {
+            CurrentDate = date,
+            CustIds = custId
+        });
 
-        public Task<IEnumerable<AccumulateWinloss>> GetUserAccumulateWinlossAsync(string custId, DateTime date)
-            => DynamicRepository.FetchAsync<AccumulateWinloss>(new GetUserAccumulateWinlossCriteria { CurrentDate = date, CustIds = custId });
 
-
-        public Task<IEnumerable<AccumulateWinloss>> GetLastestAccumulateWinlossAsync(DateTime lastCheckTime, int batchCount)
-            => DynamicRepository.FetchAsync<AccumulateWinloss>(new GetLastestAccumulateCriteria
-            {
-                BatchNo = batchCount,
-                LastCheckTIme = lastCheckTime
-            });
-    }
+    public Task<IEnumerable<AccumulateWinloss>> GetLastestAccumulateWinlossAsync(DateTime lastCheckTime, int batchCount)
+        => dynamicRepository.FetchAsync<AccumulateWinloss>(new GetLastestAccumulateCriteria(!AppSetting.IsMainService)
+        {
+            BatchNo = batchCount,
+            LastCheckTIme = lastCheckTime
+        });
 }

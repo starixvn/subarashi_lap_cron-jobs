@@ -3,18 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{0A7261BD-2EA8-46EA-A25C-A592208F0B58}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanex.Athena.CronJobs.Core", "src\Fanex.Athena.CronJobs.Core\Fanex.Athena.CronJobs.Core.csproj", "{6CD6F7F2-4679-4CF0-BB8F-CD64BBC22DE6}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanex.Athena.CronJobs.Site", "src\Fanex.Athena.CronJobs.Site\Fanex.Athena.CronJobs.Site.csproj", "{F960ADFC-E78F-4577-A926-DF54F0897884}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Appliction", "Appliction", "{31C6DC71-1233-44BB-B946-EC92D333E66D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanex.Athena.CronJobs.App", "src\Fanex.Athena.CronJobs.App\Fanex.Athena.CronJobs.App.csproj", "{CDA82B32-15E4-4315-B948-B9E612FCAD2F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{C20B07E4-9086-4EB8-B0E4-778B829CC741}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanex.Athena.CronJobs.Infrastructure", "src\Fanex.Athena.CronJobs.Infrastructure\Fanex.Athena.CronJobs.Infrastructure.csproj", "{EDC9285E-34CC-4AFF-AABF-9D9B891DED96}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".config", ".config", "{A99290D9-0D67-48E2-89BC-4D053B389A58}"
@@ -29,7 +17,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7D763B41-75D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanex.Athena.CronJobs.Infrastructure.UnitTests", "tests\Fanex.Athena.CronJobs.Infrastructure.UnitTest\Fanex.Athena.CronJobs.Infrastructure.UnitTests.csproj", "{608D0F0D-55AD-4DCB-8978-CCA20A555A8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.Athena.CronJobs.App.UnitTests", "tests\Fanex.Athena.CronJobs.App.UnitTests\Fanex.Athena.CronJobs.App.UnitTests.csproj", "{FF1D1881-64F4-4157-9A78-FDD2A7280301}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.Athena.CronJobs.Application.UnitTests", "tests\Fanex.Athena.CronJobs.Application.UnitTests\Fanex.Athena.CronJobs.Application.UnitTests.csproj", "{FF1D1881-64F4-4157-9A78-FDD2A7280301}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.Athena.CronJobs.Host", "src\Fanex.Athena.CronJobs.Host\Fanex.Athena.CronJobs.Host.csproj", "{6A272984-A85F-74C0-AF4C-915D8709B58B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.Athena.CronJobs.Application", "src\Fanex.Athena.CronJobs.Application\Fanex.Athena.CronJobs.Application.csproj", "{2B27EC23-BA45-6961-C94F-F748A632FEE3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.Athena.CronJobs.Domain", "src\Fanex.Athena.CronJobs.Domain\Fanex.Athena.CronJobs.Domain.csproj", "{0D542D29-2B8F-C611-0370-CBDA5B9BF137}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.Athena.CronJobs.Host.UnitTest", "tests\Fanex.Athena.CronJobs.Host.UnitTest\Fanex.Athena.CronJobs.Host.UnitTest.csproj", "{9414AFEA-F75F-8C8D-0BE9-CABE40E28E33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,18 +33,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6CD6F7F2-4679-4CF0-BB8F-CD64BBC22DE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CD6F7F2-4679-4CF0-BB8F-CD64BBC22DE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6CD6F7F2-4679-4CF0-BB8F-CD64BBC22DE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6CD6F7F2-4679-4CF0-BB8F-CD64BBC22DE6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F960ADFC-E78F-4577-A926-DF54F0897884}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F960ADFC-E78F-4577-A926-DF54F0897884}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F960ADFC-E78F-4577-A926-DF54F0897884}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F960ADFC-E78F-4577-A926-DF54F0897884}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CDA82B32-15E4-4315-B948-B9E612FCAD2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CDA82B32-15E4-4315-B948-B9E612FCAD2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CDA82B32-15E4-4315-B948-B9E612FCAD2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CDA82B32-15E4-4315-B948-B9E612FCAD2F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EDC9285E-34CC-4AFF-AABF-9D9B891DED96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EDC9285E-34CC-4AFF-AABF-9D9B891DED96}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDC9285E-34CC-4AFF-AABF-9D9B891DED96}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -61,20 +45,34 @@ Global
 		{FF1D1881-64F4-4157-9A78-FDD2A7280301}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF1D1881-64F4-4157-9A78-FDD2A7280301}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF1D1881-64F4-4157-9A78-FDD2A7280301}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A272984-A85F-74C0-AF4C-915D8709B58B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A272984-A85F-74C0-AF4C-915D8709B58B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A272984-A85F-74C0-AF4C-915D8709B58B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A272984-A85F-74C0-AF4C-915D8709B58B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B27EC23-BA45-6961-C94F-F748A632FEE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B27EC23-BA45-6961-C94F-F748A632FEE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B27EC23-BA45-6961-C94F-F748A632FEE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B27EC23-BA45-6961-C94F-F748A632FEE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D542D29-2B8F-C611-0370-CBDA5B9BF137}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D542D29-2B8F-C611-0370-CBDA5B9BF137}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D542D29-2B8F-C611-0370-CBDA5B9BF137}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D542D29-2B8F-C611-0370-CBDA5B9BF137}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9414AFEA-F75F-8C8D-0BE9-CABE40E28E33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9414AFEA-F75F-8C8D-0BE9-CABE40E28E33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9414AFEA-F75F-8C8D-0BE9-CABE40E28E33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9414AFEA-F75F-8C8D-0BE9-CABE40E28E33}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{0A7261BD-2EA8-46EA-A25C-A592208F0B58} = {7D763B41-75DE-4223-B892-2F513A9BC2C8}
-		{6CD6F7F2-4679-4CF0-BB8F-CD64BBC22DE6} = {0A7261BD-2EA8-46EA-A25C-A592208F0B58}
-		{F960ADFC-E78F-4577-A926-DF54F0897884} = {7D763B41-75DE-4223-B892-2F513A9BC2C8}
-		{31C6DC71-1233-44BB-B946-EC92D333E66D} = {7D763B41-75DE-4223-B892-2F513A9BC2C8}
-		{CDA82B32-15E4-4315-B948-B9E612FCAD2F} = {31C6DC71-1233-44BB-B946-EC92D333E66D}
-		{C20B07E4-9086-4EB8-B0E4-778B829CC741} = {7D763B41-75DE-4223-B892-2F513A9BC2C8}
-		{EDC9285E-34CC-4AFF-AABF-9D9B891DED96} = {C20B07E4-9086-4EB8-B0E4-778B829CC741}
+		{EDC9285E-34CC-4AFF-AABF-9D9B891DED96} = {7D763B41-75DE-4223-B892-2F513A9BC2C8}
 		{608D0F0D-55AD-4DCB-8978-CCA20A555A8F} = {52C1F773-ED59-4E40-A1FF-AB2C4D6B7329}
 		{FF1D1881-64F4-4157-9A78-FDD2A7280301} = {52C1F773-ED59-4E40-A1FF-AB2C4D6B7329}
+		{6A272984-A85F-74C0-AF4C-915D8709B58B} = {7D763B41-75DE-4223-B892-2F513A9BC2C8}
+		{2B27EC23-BA45-6961-C94F-F748A632FEE3} = {7D763B41-75DE-4223-B892-2F513A9BC2C8}
+		{0D542D29-2B8F-C611-0370-CBDA5B9BF137} = {7D763B41-75DE-4223-B892-2F513A9BC2C8}
+		{9414AFEA-F75F-8C8D-0BE9-CABE40E28E33} = {52C1F773-ED59-4E40-A1FF-AB2C4D6B7329}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9A7ED7FE-9ED2-4BE2-8D38-1FDB1CBC026C}

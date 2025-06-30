@@ -1,17 +1,16 @@
-using Fanex.Data.Repository;
+namespace Fanex.Athena.CronJobs.Infrastructure.Criteria.Command;
 
-namespace Fanex.Athena.CronJobs.Infrastructure.Criteria.Command
+using Data.Repository;
+
+public class UpdateMatchAlertCommand : NonQueryCommand
 {
-    public class UpdateMatchAlertCommand : NonQueryCommand
-    {
-        public string MatchMonitoringData { get; init; }
+    public string MatchMonitoringData { get; init; }
 
-        public int ErrCode { get; set; }
-        
-        public string ErrMsg { get; set; }
+    public int ErrCode { get; set; }
 
-        public override string GetSettingKey() => "Task_MatchMonitoring_UpdateMatchAlert";
+    public string ErrMsg { get; set; }
 
-        public override bool IsValid() => !string.IsNullOrEmpty(MatchMonitoringData);
-    }
+    public override string GetSettingKey() => "Task_MatchMonitoring_UpdateMatchAlert";
+
+    public override bool IsValid() => !string.IsNullOrEmpty(MatchMonitoringData);
 }

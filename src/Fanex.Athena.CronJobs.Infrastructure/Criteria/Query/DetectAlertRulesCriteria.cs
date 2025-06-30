@@ -1,11 +1,10 @@
-using Fanex.Data.Repository;
+namespace Fanex.Athena.CronJobs.Infrastructure.Criteria.Query;
 
-namespace Fanex.Athena.CronJobs.Infrastructure.Criteria.Query
+using Data.Repository;
+
+public class DetectAlertRulesCriteria : CriteriaBase
 {
-    public class DetectAlertRulesCriteria : CriteriaBase
-    {
-        public override string GetSettingKey() => "Task_MatchMonitoring_DetectAlertRules";
+    public override string GetSettingKey() => "Task_MatchMonitoring_DetectAlertRules";
 
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

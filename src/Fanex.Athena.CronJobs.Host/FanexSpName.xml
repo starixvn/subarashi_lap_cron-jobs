@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Functions SiteId="35" SiteName="CronJobs">
+	<Function Name="MonitorAccumulate">
+		<Setting Key="Acc_WLMonitored_Service_GlobalSettingSel" SpName="Acc_WLMonitored_Service_GlobalSettingSel" DbName="DBEXT.bodb02.wsv_lap" />
+		<Setting Key="Acc_Dep_WLMonitored_Service_AccumulatedDataSel" SpName="Acc_Dep_WLMonitored_Service_AccumulatedDataSel" DbName="DBEXT.bodb02.wsv_lap" />
+		<Setting Key="Acc_Dep_WLMonitored_Service_LatestAccumulatedDataSel" SpName="Acc_Dep_WLMonitored_Service_LatestAccumulatedDataSel" DbName="DBEXT.bodb02.wsv_lap" />
+		<Setting Key="Acc_Dep_WLMonitored_Service_ReachHistoryIns" SpName="Acc_Dep_WLMonitored_Service_ReachHistoryIns" DbName="DBEXT.bodb02.wsv_lap" />
+		<Setting Key="Acc_WLMonitored_Service_GlobalSettingSel_STANDBY" SpName="Acc_WLMonitored_Service_GlobalSettingSel" DbName="DBEXT_STANDBY.bodb02.wsv_lap" />
+		<Setting Key="Acc_Dep_WLMonitored_Service_AccumulatedDataSel_STANDBY" SpName="Acc_Dep_WLMonitored_Service_AccumulatedDataSel" DbName="DBEXT_STANDBY.bodb02.wsv_lap" />
+		<Setting Key="Acc_Dep_WLMonitored_Service_LatestAccumulatedDataSel_STANDBY" SpName="Acc_Dep_WLMonitored_Service_LatestAccumulatedDataSel" DbName="DBEXT_STANDBY.bodb02.wsv_lap" />
+		<Setting Key="Acc_Dep_WLMonitored_Service_ReachHistoryIns_STANDBY" SpName="Acc_Dep_WLMonitored_Service_ReachHistoryIns" DbName="DBEXT_STANDBY.bodb02.wsv_lap" />
+		<Setting Key="Acc_WLMonitored_Service_GetSettingByCust" SpName="Acc_WLMonitored_Service_GetSettingByCust" DbName="DBCUST.CustDB.wsv_lap" />
+		<Setting Key="Acc_WLMonitored_Service_GetChangedSettingList" SpName="Acc_WLMonitored_Service_GetChangedSettingList" DbName="DBCUST.CustDB.wsv_lap" />
+		<Setting Key="Lrf_MessageIns" SpName="Lrf_MessageIns" DbName="DBCUST.SiteConfig.wsv_lap" />
+		<Setting Key="N88_MessageIns" SpName="N88_MessageIns" DbName="DBN88POL.N88_UserControl.wsv_lap" />
+		<Setting Key="DailyJob_CheckTasksStatus" SpName="DailyJob_CheckTasksStatus" DbName="DBWH.bodb_DWRS.wsv_lap" />
+		<Setting Key="Lrf_AbnormalBet_GetLicByDate" SpName="Lrf_AbnormalBet_GetLicByDate" DbName="DBWH.bodb_DWRS.wsv_lap" />
+		<Setting Key="Lrf_SystemSettingsByNameSel" SpName="Lrf_SystemSettingsByNameSel" DbName="DBCUST.SiteConfig.wsv_lap" />
+		<Setting Key="Lrf_SystemSettingsUpd" SpName="Lrf_SystemSettingsUpd" DbName="DBCUST.SiteConfig.wsv_lap" />
+		<Setting Key="Task_MatchMonitoring_DetectAlertRules" SpName="Task_MatchMonitoring_DetectAlertRules" DbName="DBBOF.bodb02.wsv_lap" />
+		<Setting Key="Task_MatchMonitoring_UpdateMatchAlert" SpName="Task_MatchMonitoring_UpdateMatchAlert" DbName="DBCUST.bodb_licensee.wsv_lap" />
+		<Setting Key="Task_MatchMonitoring_UpdateAlertHistory" SpName="Task_MatchMonitoring_UpdateAlertHistory" DbName="DBLIC.bodb_LicenseeReport.wsv_lap" />
+		<Setting Key="Task_MatchMonitoring_UpdateAlertHistory_STANDBY" SpName="Task_MatchMonitoring_UpdateAlertHistory" DbName="DBLIC_STANDBY.bodb_LicenseeReport.wsv_lap" />
+	</Function>
+</Functions>

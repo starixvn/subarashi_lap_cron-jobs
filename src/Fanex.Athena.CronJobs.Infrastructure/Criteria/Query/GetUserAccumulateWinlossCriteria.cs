@@ -1,16 +1,16 @@
-﻿using Fanex.Data.Repository;
+﻿namespace Fanex.Athena.CronJobs.Infrastructure.Criteria.Query;
+
 using System;
+using Data.Repository;
+using Helpers;
 
-namespace Fanex.Athena.CronJobs.Infrastructure.Criteria.Query
+public class GetUserAccumulateWinlossCriteria(bool isStandby = false) : CriteriaBase
 {
-    public class GetUserAccumulateWinlossCriteria : CriteriaBase
-    {
-        public string CustIds { get; init; }
+    public string CustIds { get; init; }
 
-        public DateTime CurrentDate { get; init; }
+    public DateTime CurrentDate { get; init; }
 
-        public override string GetSettingKey() => "Acc_Dep_WLMonitored_Service_AccumulatedDataSel";
+    public override string GetSettingKey() => CriteriaHelper.GetSettingKey("Acc_Dep_WLMonitored_Service_AccumulatedDataSel", isStandby);
 
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

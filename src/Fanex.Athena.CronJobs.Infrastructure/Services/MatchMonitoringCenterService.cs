@@ -1,45 +1,31 @@
-﻿namespace Fanex.Athena.CronJobs.Infrastructure.Services
+﻿namespace Fanex.Athena.CronJobs.Infrastructure.Services;
+
+using System.Threading.Tasks;
+using Domain.Logs;
+using Domain.Repository;
+using Domain.Services;
+
+public class MatchMonitoringCenterService(
+    IMatchMonitoringCenterRepository matchRepository,
+    ILogAggregate logAggregate)
+    : IMatchMonitoringCenterService
 {
-    using System.Threading.Tasks;
-    using Core.Logs;
-    using Core.Repository;
-    using Core.Services;
-    using Microsoft.Extensions.Options;
-    using Settings;
-
-    public class MatchMonitoringCenterService : IMatchMonitoringCenterService
+    public async Task DetectAlertRulesAsync()
     {
-        public MatchMonitoringCenterService(
-            IMatchMonitoringCenterRepository matchRepository,
-            IOptions<AppSetting> options,
-            ILogAggregate logAggregate)
+        logAggregate.AppendHeader("Begin Detect Alert Rules Monitoring Center Service");
+
+        string result = await matchRepository.DetectAlertRulesAsync();
+
+        logAggregate.AppendLog($"Result: {result}");
+
+        if (!string.IsNullOrEmpty(result))
         {
-            MatchRepository = matchRepository;
-            AppSetting = options?.Value;
-            LogAggregate = logAggregate;
-        }
+            logAggregate.AppendLog("Detected alert rules. Updating match alert and alert history...");
 
-        private IMatchMonitoringCenterRepository MatchRepository { get; }
-        private AppSetting AppSetting { get; }
-        private ILogAggregate LogAggregate { get; }
+            await matchRepository.UpdateMatchAlertAsync(result);
+            await matchRepository.UpdateAlertHistoryAsync(result);
 
-        public async Task DetectAlertRulesAsync()
-        {
-            LogAggregate.AppendHeader("Begin Detect Alert Rules Monitoring Center Service");
-
-            string result = await MatchRepository.DetectAlertRulesAsync();
-
-            LogAggregate.AppendLog($"Result: {result}");
-
-            if (!string.IsNullOrEmpty(result))
-            {
-                LogAggregate.AppendLog("Detected alert rules. Updating match alert and alert history...");
-
-                await MatchRepository.UpdateMatchAlertAsync(result);
-                await MatchRepository.UpdateAlertHistoryAsync(result);
-
-                LogAggregate.AppendLog("Match alert and alert history update completed.");
-            }
+            logAggregate.AppendLog("Match alert and alert history update completed.");
         }
     }
 }
