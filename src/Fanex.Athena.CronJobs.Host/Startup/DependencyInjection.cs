@@ -2,6 +2,8 @@
 
 using System;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using Application.Filters;
 using Application.Settings;
@@ -37,6 +39,7 @@ public static class DependencyInjection
         services.Configure<SentrySetting>(configuration.GetSection(SentrySetting.SettingName));
         services.Configure<RedisSetting>(configuration.GetSection(RedisSetting.SettingName));
         services.Configure<AppSetting>(configuration.GetSection(AppSetting.SettingName));
+        services.Configure<LarkWebhookSetting>(configuration.GetSection(LarkWebhookSetting.SettingName));
 
         // DI
         services.AddRepository();
@@ -69,10 +72,26 @@ public static class DependencyInjection
         services.AddUnderMaintenance(configuration);
         services.AddLogAggregate();
         services.AddHealthChecks(configuration);
+        services.AddHttpClient(configuration);
 
         services.InstallServices(configuration, typeof(IServiceInstaller).Assembly);
 
         return services;
+    }
+
+    private static void AddHttpClient(this IServiceCollection services, IConfiguration configuration)
+    {
+        var larkWebhookSetting = configuration.GetSection(LarkWebhookSetting.SettingName).Get<LarkWebhookSetting>();
+        var httpClientBuilder = services.AddHttpClient(LarkWebhookSetting.SettingName);
+
+        if (!string.IsNullOrEmpty(larkWebhookSetting.ProxyUrl))
+        {
+            httpClientBuilder.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                Proxy = new WebProxy(new Uri(larkWebhookSetting.ProxyUrl)),
+                UseProxy = true
+            });
+        }
     }
 
     private static void AddHealthChecks(this IServiceCollection services, IConfiguration configuration)

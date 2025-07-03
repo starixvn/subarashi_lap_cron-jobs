@@ -16,6 +16,7 @@
 	<ItemGroup>
 		<PackageReference Include="Fanex.Data.Repository" Version="4.3.4.3" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Fanex.Logging.Sentry" Version="1.0.6" />
 	</ItemGroup>
 
 	<ItemGroup>

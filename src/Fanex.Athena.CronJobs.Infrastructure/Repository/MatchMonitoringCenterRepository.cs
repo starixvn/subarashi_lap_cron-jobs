@@ -1,10 +1,12 @@
 ﻿namespace Fanex.Athena.CronJobs.Infrastructure.Repository;
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Settings;
 using Criteria.Command;
 using Criteria.Query;
 using Data.Repository;
+using Domain.DTO;
 using Domain.Repository;
 using Microsoft.Extensions.Options;
 
@@ -45,6 +47,17 @@ public class MatchMonitoringCenterRepository(IDynamicRepository dynamicRepositor
 
             await dynamicRepository.ExecuteAsync(commandStandby);
         }
+    }
+
+    public Task<IEnumerable<TriggeredDataSendWebHook>> GetTriggeredDataSendWebHookAsync(string licenseeName, string matchMonitoringData)
+    {
+        var criteria = new GetTriggeredDataSendWebHookCriteria
+        {
+            LicenseeName = licenseeName,
+            MatchMonitoringData = matchMonitoringData
+        };
+
+        return dynamicRepository.FetchAsync<TriggeredDataSendWebHook>(criteria);
     }
 
     private bool IsProductionOrUat()

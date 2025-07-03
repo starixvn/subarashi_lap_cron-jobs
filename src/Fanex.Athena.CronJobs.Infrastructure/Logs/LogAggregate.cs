@@ -4,8 +4,9 @@ using System;
 using System.Text;
 using Domain.Logs;
 using Microsoft.Extensions.Logging;
+using ILogger = Logging.ILogger;
 
-public class LogAggregate(ILogger<LogAggregate> logger) : ILogAggregate
+public class LogAggregate(ILogger logger) : ILogAggregate
 {
     private StringBuilder builder = new();
 
@@ -15,8 +16,8 @@ public class LogAggregate(ILogger<LogAggregate> logger) : ILogAggregate
 
     public string GetAggregateMsg()
     {
-        var logmsg = builder.ToString();
-        return logmsg;
+        var logMsg = builder.ToString();
+        return logMsg;
     }
 
     public void SendLog(LogLevel logLevel)
@@ -26,7 +27,23 @@ public class LogAggregate(ILogger<LogAggregate> logger) : ILogAggregate
             return;
         }
 
-        logger.Log(logLevel, builder.ToString());
+        var message = builder.ToString();
+        switch (logLevel)
+        {
+            case LogLevel.Information:
+                logger.Info(message);
+                break;
+            case LogLevel.Warning:
+                logger.Warn(message);
+                break;
+            case LogLevel.Error:
+                logger.Error(message);
+                break;
+            case LogLevel.Critical:
+                logger.Critical(message);
+                break;
+        }
+
         builder = new StringBuilder();
     }
 

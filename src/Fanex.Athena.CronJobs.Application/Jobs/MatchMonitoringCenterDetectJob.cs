@@ -3,13 +3,17 @@
 using System.Threading.Tasks;
 using Domain.Logs;
 using Domain.Services;
+using Hangfire;
+using Manual;
 
 public class MatchMonitoringCenterDetectJob(
     IMatchMonitoringCenterService matchService,
-    ILogAggregate logAggregate) : JobBase(logAggregate)
+    ILogAggregate logAggregate,
+    IBackgroundJobClient backgroundJobClient) : JobBase(logAggregate)
 {
     protected override async Task DoJobAsync()
     {
-        await matchService.DetectAlertRulesAsync();
+        var result = await matchService.DetectAlertRulesAsync();
+        backgroundJobClient.Enqueue<LarkWebhookJob>(job => job.Execute(result));
     }
 }

@@ -4,15 +4,16 @@ using Infrastructure.Logs;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
+using ILogger = Logging.ILogger;
 
-public class LogAggrregateTests
+public class LogAggregateTests
 {
-    private ILogger<LogAggregate> Logger { get; set; }
+    private ILogger Logger { get; set; }
 
     [SetUp]
     public void SetUp()
     {
-        Logger = Substitute.For<ILogger<LogAggregate>>();
+        Logger = Substitute.For<ILogger>();
     }
 
     [Test]
@@ -75,8 +76,7 @@ public class LogAggrregateTests
         // Assert
         Assert.That(Logger.ReceivedCalls()
                 .Select(call => call.GetArguments())
-                .Count(callArguments => ((LogLevel)callArguments[0]).Equals(LogLevel.Information)
-                                        && ((IReadOnlyList<KeyValuePair<string, object>>)callArguments[2]).Last().Value.ToString().Contains(msg)),
+                .Count(callArguments => callArguments[0].ToString().Contains(msg)),
             Is.EqualTo(1));
     }
 }
