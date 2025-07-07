@@ -101,8 +101,8 @@ public class NotificationService(
     {
         var timezone = TimeZoneInfo.CreateCustomTimeZone("LAP DB Timezone", TimeSpan.FromHours(AppSetting.ServerTimeOffSet), "LAP DB Timezone",
             "LAP DB Timezone");
-        var date = TimeZoneInfo.ConvertTime(DateTime.Now, timezone);
-        return date;
+        var dateTimeOffset = TimeZoneInfo.ConvertTime(DateTimeOffset.Now, timezone);
+        return dateTimeOffset.Date;
     }
 
     private async Task NotificateReachThresholdCustAsync(IEnumerable<AccumulateWinloss> accumulateWLs, NotificationServiceParam param)

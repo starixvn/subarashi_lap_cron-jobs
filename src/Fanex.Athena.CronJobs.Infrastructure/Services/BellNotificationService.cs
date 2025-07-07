@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using Application.Settings;
 using Domain.Constants;
@@ -38,12 +39,8 @@ public class BellNotificationService(
         var today = GetServerDate().ToString("yyyy-MM-dd");
         var jobDoneDate = await bellNotificationRepository.GetSystemSettingAsync(SystemSettingName.AbnormalBetNotificationJob);
 
-        if (string.IsNullOrEmpty(jobDoneDate.Value) || DateTime.Parse(today) > DateTime.Parse(jobDoneDate.Value))
-        {
-            return false;
-        }
-
-        return true;
+        return !string.IsNullOrEmpty(jobDoneDate.Value) &&
+               DateTime.Parse(today, CultureInfo.CurrentCulture) <= DateTime.Parse(jobDoneDate.Value, CultureInfo.CurrentCulture);
     }
 
     public async Task UpdateAbnormalBetNotificationJobDate()
@@ -65,7 +62,7 @@ public class BellNotificationService(
     {
         var timezone = TimeZoneInfo.CreateCustomTimeZone("LAP DB Timezone", TimeSpan.FromHours(AppSetting.ServerTimeOffSet), "LAP DB Timezone",
             "LAP DB Timezone");
-        var date = TimeZoneInfo.ConvertTime(DateTime.Now, timezone);
-        return date;
+        var dateTimeOffset = TimeZoneInfo.ConvertTime(DateTimeOffset.Now, timezone);
+        return dateTimeOffset.Date;
     }
 }

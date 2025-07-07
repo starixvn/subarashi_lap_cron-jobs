@@ -9,28 +9,28 @@ using ONEbook.UM.Services;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Interface)]
 public class UmHangfireFilterAttribute(IMaintenanceService maintenanceService) : JobFilterAttribute, IClientFilter, IServerFilter
 {
-    public void OnCreating(CreatingContext filterContext)
+    public void OnCreating(CreatingContext context)
     {
         if (maintenanceService.IsUnderMaintenance())
         {
-            filterContext.Canceled = true;
+            context.Canceled = true;
         }
     }
 
-    public void OnCreated(CreatedContext filterContext)
+    public void OnCreated(CreatedContext context)
     {
         //Nothing to do
     }
 
-    public void OnPerforming(PerformingContext filterContext)
+    public void OnPerforming(PerformingContext context)
     {
         if (maintenanceService.IsUnderMaintenance())
         {
-            filterContext.Canceled = true;
+            context.Canceled = true;
         }
     }
 
-    public void OnPerformed(PerformedContext filterContext)
+    public void OnPerformed(PerformedContext context)
     {
         //Nothing to do
     }

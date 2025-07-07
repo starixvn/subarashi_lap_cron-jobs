@@ -110,15 +110,7 @@ public class InsertAbnormalBetNotificationJob(
 
     private string GetMPALicenseeList(string licenseeList)
     {
-        var MPALicensees = new List<string>();
-
-        foreach (var licensee in licenseeList.Split(','))
-        {
-            if (AppSetting.MPALicenseeList.Contains(licensee))
-            {
-                MPALicensees.Add(licensee);
-            }
-        }
+        var MPALicensees = licenseeList.Split(',').Where(licensee => AppSetting.MPALicenseeList.Contains(licensee)).ToList();
 
         return string.Join(",", MPALicensees);
     }

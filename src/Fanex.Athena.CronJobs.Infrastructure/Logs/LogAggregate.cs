@@ -11,7 +11,7 @@ public class LogAggregate(ILogger logger) : ILogAggregate
     private StringBuilder builder = new();
 
     public void AppendLog(string message)
-        => builder.AppendLine($"{DateTime.Now}: {message}");
+        => builder.AppendLine($"{DateTimeOffset.Now}: {message}");
 
 
     public string GetAggregateMsg()
@@ -41,6 +41,9 @@ public class LogAggregate(ILogger logger) : ILogAggregate
                 break;
             case LogLevel.Critical:
                 logger.Critical(message);
+                break;
+            default:
+                logger.Debug(message);
                 break;
         }
 
