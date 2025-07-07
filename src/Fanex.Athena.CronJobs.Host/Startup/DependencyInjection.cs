@@ -82,7 +82,7 @@ public static class DependencyInjection
     private static void AddHttpClient(this IServiceCollection services, IConfiguration configuration)
     {
         var larkWebhookSetting = configuration.GetSection(LarkWebhookSetting.SettingName).Get<LarkWebhookSetting>();
-        var httpClientBuilder = services.AddHttpClient(LarkWebhookSetting.SettingName);
+        var httpClientBuilder = services.AddHttpClient(LarkWebhookSetting.SettingName).RemoveAllLoggers();
 
         if (!string.IsNullOrEmpty(larkWebhookSetting.ProxyUrl))
         {

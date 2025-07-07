@@ -5,54 +5,48 @@ using Hangfire;
 using Hangfire.Common;
 using Hangfire.States;
 using Hangfire.Storage;
-using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
+using ILogger = Logging.ILogger;
 
 public class GlobalHangfireJobExceptionFilterTests
 {
-    private ILogger<GlobalHangfireJobExceptionFilterAttribute> Logger { get; set; }
-    private ElectStateContext ElectStateContext { get; set; }
+    private ElectStateContext _electStateContext;
+    private ILogger _logger;
 
     [SetUp]
     public void SetUp()
     {
-        Logger = Substitute.For<ILogger<GlobalHangfireJobExceptionFilterAttribute>>();
-        ElectStateContext = new ElectStateContext(GetApplyStateContext());
+        _logger = Substitute.For<ILogger>();
+        _electStateContext = new ElectStateContext(GetApplyStateContext());
     }
 
     [Test]
     public void OnStateElection_WhenCallWithNotFailState_NotCallLogger()
     {
         //Arrange
-        ElectStateContext.CandidateState = new DeletedState();
-        var filter = new GlobalHangfireJobExceptionFilterAttribute(Logger);
+        _electStateContext.CandidateState = new DeletedState();
+        var filter = new GlobalHangfireJobExceptionFilterAttribute(_logger);
 
         //Action
-        filter.OnStateElection(ElectStateContext);
+        filter.OnStateElection(_electStateContext);
 
         //Assert
-        Assert.That(Logger.ReceivedCalls()
-                .Select(call => call.GetArguments())
-                .Count(callArguments => ((LogLevel)callArguments[0]).Equals(LogLevel.Error)),
-            Is.EqualTo(0));
+        _logger.DidNotReceive().Error(Arg.Any<string>(), Arg.Any<Exception>());
     }
 
     [Test]
     public void OnStateElection_WhenCallWithFailState_CallLogger()
     {
         //Arrange
-        ElectStateContext.CandidateState = new FailedState(new Exception("Test"));
-        var filter = new GlobalHangfireJobExceptionFilterAttribute(Logger);
+        _electStateContext.CandidateState = new FailedState(new Exception("Test"));
+        var filter = new GlobalHangfireJobExceptionFilterAttribute(_logger);
 
         //Action
-        filter.OnStateElection(ElectStateContext);
+        filter.OnStateElection(_electStateContext);
 
         //Assert
-        Assert.That(Logger.ReceivedCalls()
-                .Select(call => call.GetArguments())
-                .Count(callArguments => ((LogLevel)callArguments[0]).Equals(LogLevel.Error)),
-            Is.EqualTo(1));
+        _logger.Received(1).Error(Arg.Any<string>(), Arg.Any<Exception>());
     }
 
     private static ApplyStateContext GetApplyStateContext()
@@ -61,8 +55,9 @@ public class GlobalHangfireJobExceptionFilterTests
         var methodInfo = type.GetMethod("Test");
         var job = new Job(type, methodInfo);
         var backgroundJob = new BackgroundJob(Guid.NewGuid().ToString(), job, DateTime.Now);
+        var state = new FailedState(new Exception());
         return new ApplyStateContext(Substitute.For<JobStorage>(), Substitute.For<IStorageConnection>(), Substitute.For<IWriteOnlyTransaction>(), backgroundJob,
-            Substitute.For<IState>(), "");
+            state, "");
     }
 
     private class TestClass

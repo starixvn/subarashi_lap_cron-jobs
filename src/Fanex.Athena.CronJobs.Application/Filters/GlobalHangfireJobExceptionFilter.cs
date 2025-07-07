@@ -5,18 +5,17 @@ using System.Text;
 using Hangfire.Common;
 using Hangfire.States;
 using Helpers;
-using Microsoft.Extensions.Logging;
+using Logging;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Interface)]
-public class GlobalHangfireJobExceptionFilterAttribute(ILogger<GlobalHangfireJobExceptionFilterAttribute> logger) : JobFilterAttribute, IElectStateFilter
+public class GlobalHangfireJobExceptionFilterAttribute(ILogger logger) : JobFilterAttribute, IElectStateFilter
 {
     public void OnStateElection(ElectStateContext context)
     {
-        var failedState = context.CandidateState as FailedState;
-        if (failedState is not null)
+        if (context.CandidateState is FailedState failedState)
         {
             var exception = failedState.Exception;
-            logger.LogError(GenerateJobException(context), exception);
+            logger.Error(GenerateJobException(context), exception);
         }
     }
 

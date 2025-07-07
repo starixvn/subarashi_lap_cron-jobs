@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Unicode;
 using Domain.DTO;
 
 public static class WebhookHelper
@@ -68,7 +70,13 @@ public static class WebhookHelper
             }
         };
 
-        return JsonSerializer.Serialize(payload);
+        var options = new JsonSerializerOptions
+        {
+            WriteIndented = false,
+            Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+        };
+
+        return JsonSerializer.Serialize(payload, options);
     }
 
     public static LogRequest BuildLogRequest(
