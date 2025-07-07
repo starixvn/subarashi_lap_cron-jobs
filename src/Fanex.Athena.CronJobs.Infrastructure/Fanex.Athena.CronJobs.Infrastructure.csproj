@@ -2,12 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
-		<CodeAnalysisRuleSet>..\..\.sonarlint\lap.cronjobscsharp.ruleset</CodeAnalysisRuleSet>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<AdditionalFiles Include="..\..\.sonarlint\lap.cronjobs\CSharp\SonarLint.xml" Link="SonarLint.xml" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />

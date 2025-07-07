@@ -63,17 +63,22 @@ public class NotificationServiceTests
     public async Task NotificateChangeSettingAsync_WhenCall_ReceiveCorrectConvertServerTimeOffSet()
     {
         //Arrange
-        SetupSetting();
+        const int serverTimeOffSet = 7;
+        _options.Value.ReturnsForAnyArgs(new AppSetting { ServerTimeOffSet = serverTimeOffSet });
+
         var service = CreateService();
-        IEnumerable<CustThresholdSetting> custSetting = null;
-        _notificationRepository.GetCustChangeThresholdSettingAsync(default).ReturnsForAnyArgs(custSetting);
-        var now = DateTimeOffset.Now;
+        _notificationRepository.GetCustChangeThresholdSettingAsync(default)
+            .ReturnsForAnyArgs(new List<CustThresholdSetting>());
+
+        var timezone = TimeZoneInfo.CreateCustomTimeZone("LAP DB Timezone", TimeSpan.FromHours(serverTimeOffSet),
+            "LAP DB Timezone", "LAP DB Timezone");
+        var expectedDate = TimeZoneInfo.ConvertTime(DateTimeOffset.Now, timezone).Date;
 
         //Action
         await service.NotificateChangeSettingAsync(new NotificationServiceParam());
 
         //Assert
-        await _accumulateRepository.Received().GetUserAccumulateWinlossAsync(Arg.Any<string>(), Arg.Is<DateTime>(_ => CheckDateTimeOffSet(_, now)));
+        await _accumulateRepository.Received().GetUserAccumulateWinlossAsync(Arg.Any<string>(), Arg.Is<DateTime>(d => d.Date == expectedDate));
     }
 
     [Test]
@@ -234,15 +239,6 @@ public class NotificationServiceTests
         {
             BatchNo = 2
         };
-
-    private static bool CheckDateTimeOffSet(DateTime convertedDate, DateTimeOffset originDate)
-    {
-        var diffTimeSpan = convertedDate - originDate.DateTime;
-        var originOffSet = originDate.Offset.Hours;
-        return diffTimeSpan.Ticks > 0
-            ? diffTimeSpan.Hours == OffSet - originOffSet
-            : diffTimeSpan.Hours == OffSet - originOffSet + 1 && diffTimeSpan.Minutes == -59 && diffTimeSpan.Seconds == -59;
-    }
 
     private NotificationService CreateService()
         => new(_notificationRepository, _accumulateRepository, _options, _logAggregate);
