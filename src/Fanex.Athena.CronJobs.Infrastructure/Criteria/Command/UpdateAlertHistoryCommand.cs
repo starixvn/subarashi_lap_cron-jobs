@@ -1,24 +1,17 @@
-using Fanex.Data.Repository;
+namespace Fanex.Athena.CronJobs.Infrastructure.Criteria.Command;
 
-namespace Fanex.Athena.CronJobs.Infrastructure.Criteria.Command
+using Data.Repository;
+using Helpers;
+
+public class UpdateAlertHistoryCommand(bool isStandby = false) : NonQueryCommand
 {
-    public class UpdateAlertHistoryCommand : NonQueryCommand
-    {
-        public string MatchMonitoringData { get; init; }
-        
-        private readonly string settingKey;
+    public string MatchMonitoringData { get; init; }
 
-        public int ErrCode { get; set; }
-        
-        public string ErrMsg { get; set; }
+    public int ErrCode { get; set; }
 
-        public UpdateAlertHistoryCommand(string settingKey = "Task_MatchMonitoring_UpdateAlertHistory53")
-        {
-            this.settingKey = settingKey;
-        }
+    public string ErrMsg { get; set; }
 
-        public override string GetSettingKey() => settingKey;
+    public override string GetSettingKey() => CriteriaHelper.GetSettingKey("Task_MatchMonitoring_UpdateAlertHistory", isStandby);
 
-        public override bool IsValid() => !string.IsNullOrEmpty(MatchMonitoringData);
-    }
+    public override bool IsValid() => !string.IsNullOrEmpty(MatchMonitoringData);
 }

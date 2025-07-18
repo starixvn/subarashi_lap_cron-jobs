@@ -1,22 +1,21 @@
-﻿using Fanex.Data.Repository;
+﻿namespace Fanex.Athena.CronJobs.Infrastructure.Criteria.Query;
+
 using System;
+using Data.Repository;
 
-namespace Fanex.Athena.CronJobs.Infrastructure.Criteria.Query
+public class GetChangeThresholdSettingCriteria : CriteriaBase
 {
-    public class GetChangeThresholdSettingCriteria : CriteriaBase
-    {
-        public int SportType { get; init; }
+    public int SportType { get; init; }
 
-        public bool IsDeposit { get; init; }
+    public bool IsDeposit { get; init; }
 
-        public string SuperList { get; init; }
+    public string SuperList { get; init; }
 
-        public bool IsTest { get; init; }
+    public bool IsTest { get; init; }
 
-        public DateTime? LastScanDate { get; init; }
+    public DateTime? LastScanDate { get; init; }
 
-        public override string GetSettingKey() => "Acc_WLMonitored_Service_GetChangedSettingList";
+    public override string GetSettingKey() => "Acc_WLMonitored_Service_GetChangedSettingList";
 
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

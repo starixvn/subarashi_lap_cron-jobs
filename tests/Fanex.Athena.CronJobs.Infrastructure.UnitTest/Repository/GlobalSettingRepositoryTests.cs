@@ -1,41 +1,48 @@
-﻿using Fanex.Athena.CronJobs.Core.DTO;
-using Fanex.Athena.CronJobs.Infrastructure.Criteria.Query;
-using Fanex.Athena.CronJobs.Infrastructure.Repository;
-using Fanex.Data.Repository;
+﻿namespace Fanex.Athena.CronJobs.Infrastructure.UnitTests.Repository;
+
+using Application.Settings;
+using Criteria.Query;
+using Data.Repository;
+using Domain.DTO;
+using Infrastructure.Repository;
+using Microsoft.Extensions.Options;
 using NSubstitute;
 using NUnit.Framework;
-using System.Threading.Tasks;
 
-namespace Fanex.Athena.CronJobs.Infrastructure.UnitTests.Repository
+public class GlobalSettingRepositoryTests
 {
-    public class GlobalSettingRepositoryTests
+    private IOptions<AppSetting> _appSetting;
+
+    private IDynamicRepository _dynamicRepository;
+
+    private GlobalSettingRepository repo;
+
+    [SetUp]
+    public void Setup()
     {
-        private IDynamicRepository _dynamicRepository;
+        _appSetting = Substitute.For<IOptions<AppSetting>>();
+        _appSetting.Value.Returns(new AppSetting());
+        _dynamicRepository = Substitute.For<IDynamicRepository>();
+        repo = new GlobalSettingRepository(_dynamicRepository, _appSetting);
+    }
 
-        [SetUp]
-        public void Setup()
-        {
-            _dynamicRepository = Substitute.For<IDynamicRepository>();
-        }
+    [TearDown]
+    public void TearDown()
+    {
+        _dynamicRepository = null;
+    }
 
-        [TearDown]
-        public void TearDown()
-        {
-            _dynamicRepository = null;
-        }
+    [Test]
+    public async Task GetSetting_WhenCall_ReceiveCorrectParam()
+    {
+        //Arrange
+        var serviceName = "Test";
 
-        [Test]
-        public async Task GetSetting_WhenCall_ReceiveCorrectParam()
-        {
-            //Arrange
-            var repo = new GlobalSettingRepository(_dynamicRepository);
-            var serviceName = "Test";
+        //Action
+        await repo.GetSetting(serviceName);
 
-            //Action
-            await repo.GetSetting(serviceName);
-
-            //Assert
-            await _dynamicRepository.Received().FetchAsync<ServiceSetting>(Arg.Is<GlobalSettingCriteria>(_ => string.Equals(_.ServiceName, serviceName, System.StringComparison.InvariantCulture)));
-        }
+        //Assert
+        await _dynamicRepository.Received()
+            .FetchAsync<ServiceSetting>(Arg.Is<GlobalSettingCriteria>(_ => string.Equals(_.ServiceName, serviceName, StringComparison.InvariantCulture)));
     }
 }
