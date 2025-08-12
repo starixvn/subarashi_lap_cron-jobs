@@ -27,4 +27,10 @@
 		<ProjectReference Include="..\Fanex.Athena.CronJobs.Infrastructure\Fanex.Athena.CronJobs.Infrastructure.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<SonarQubeSetting Include="sonar.coverage.exclusions">
+			<Value>**/Program.cs, Startup/*.cs, Configurations/*.cs</Value>
+		</SonarQubeSetting>
+	</ItemGroup>
+
 </Project>
